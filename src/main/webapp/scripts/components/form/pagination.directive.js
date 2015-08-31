@@ -1,8 +1,8 @@
 /* globals $ */
 'use strict';
 
-angular.module('jhipsterApp')
-    .directive('jhipsterAppPagination', function() {
+angular.module('sampledtoApp')
+    .directive('sampledtoAppPagination', function() {
         return {
             templateUrl: 'scripts/components/form/pagination.html'
         };
