@@ -1,4 +1,4 @@
-# Developping sampleDTO
+# Developing sampleDTO
 
 sampleDTO was generated using JHipster, you can find documentation and help at [JHipster][].
 

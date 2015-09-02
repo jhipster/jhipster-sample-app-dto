@@ -46,7 +46,7 @@ public class BankAccountResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<BankAccountDTO> create(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
+    public ResponseEntity<BankAccountDTO> createBankAccount(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
         log.debug("REST request to save BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new bankAccount cannot already have an ID").body(null);
@@ -65,10 +65,10 @@ public class BankAccountResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<BankAccountDTO> update(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
+    public ResponseEntity<BankAccountDTO> updateBankAccount(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
         log.debug("REST request to update BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() == null) {
-            return create(bankAccountDTO);
+            return createBankAccount(bankAccountDTO);
         }
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
         BankAccount result = bankAccountRepository.save(bankAccount);
@@ -85,7 +85,7 @@ public class BankAccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public List<BankAccountDTO> getAll() {
+    public List<BankAccountDTO> getAllBankAccounts() {
         log.debug("REST request to get all BankAccounts");
         return bankAccountRepository.findAll().stream()
             .map(bankAccount -> bankAccountMapper.bankAccountToBankAccountDTO(bankAccount))
@@ -99,7 +99,7 @@ public class BankAccountResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<BankAccountDTO> get(@PathVariable Long id) {
+    public ResponseEntity<BankAccountDTO> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
         return Optional.ofNullable(bankAccountRepository.findOne(id))
             .map(bankAccountMapper::bankAccountToBankAccountDTO)
@@ -116,7 +116,7 @@ public class BankAccountResource {
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
         bankAccountRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("bankAccount", id.toString())).build();

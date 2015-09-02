@@ -2,28 +2,24 @@ server:
     port: 8080
 
 liquibase:
-    context: prod
+    context: dev
 
 spring:
     profiles:
-        active: prod
+        active: dev
     datasource:
-        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/sampleDTO?useUnicode=true&characterEncoding=utf8
+        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+        url: jdbc:h2:mem:jhipster;DB_CLOSE_DELAY=-1
         databaseName: 
         serverName: 
-        username: root
+        username: 
         password: 
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
 
     jpa:
-        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
-        database: MYSQL
+        database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
+        database: H2
         openInView: false
-        show_sql: false
+        show_sql: true
         generate-ddl: false
         hibernate:
             ddl-auto: none
@@ -31,12 +27,13 @@ spring:
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
+            hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-            
+    messages:
+        cache-seconds: 1
     thymeleaf:
         mode: XHTML
-        cache: true
+        cache: false
 
 metrics:
     jmx.enabled: true
@@ -50,11 +47,7 @@ metrics:
         port: 2003
         prefix: sampleDTO
 
-http:
-    cache:
-        timeToLiveInDays: 31
-
 cache:
     timeToLiveSeconds: 3600
     ehcache:
-        maxBytesLocalHeap: 256M
+        maxBytesLocalHeap: 16M
