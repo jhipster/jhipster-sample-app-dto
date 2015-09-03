@@ -46,7 +46,7 @@ public class LabelResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<LabelDTO> create(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
+    public ResponseEntity<LabelDTO> createLabel(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
         log.debug("REST request to save Label : {}", labelDTO);
         if (labelDTO.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new label cannot already have an ID").body(null);
@@ -65,10 +65,10 @@ public class LabelResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<LabelDTO> update(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
+    public ResponseEntity<LabelDTO> updateLabel(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
         log.debug("REST request to update Label : {}", labelDTO);
         if (labelDTO.getId() == null) {
-            return create(labelDTO);
+            return createLabel(labelDTO);
         }
         Label label = labelMapper.labelDTOToLabel(labelDTO);
         Label result = labelRepository.save(label);
@@ -85,7 +85,7 @@ public class LabelResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public List<LabelDTO> getAll() {
+    public List<LabelDTO> getAllLabels() {
         log.debug("REST request to get all Labels");
         return labelRepository.findAll().stream()
             .map(label -> labelMapper.labelToLabelDTO(label))
@@ -99,7 +99,7 @@ public class LabelResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<LabelDTO> get(@PathVariable Long id) {
+    public ResponseEntity<LabelDTO> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
         return Optional.ofNullable(labelRepository.findOne(id))
             .map(labelMapper::labelToLabelDTO)
@@ -116,7 +116,7 @@ public class LabelResource {
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);
         labelRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("label", id.toString())).build();
