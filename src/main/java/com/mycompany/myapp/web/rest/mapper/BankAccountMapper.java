@@ -9,17 +9,17 @@ import org.mapstruct.*;
  * Mapper for the entity BankAccount and its DTO BankAccountDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public abstract class BankAccountMapper {
+public interface BankAccountMapper {
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "user.login", target = "userLogin")
-    abstract BankAccountDTO bankAccountToBankAccountDTO(BankAccount bankAccount);
+    BankAccountDTO bankAccountToBankAccountDTO(BankAccount bankAccount);
 
     @Mapping(source = "userId", target = "user")
     @Mapping(target = "operations", ignore = true)
-    abstract BankAccount bankAccountDTOToBankAccount(BankAccountDTO bankAccountDTO);
+    BankAccount bankAccountDTOToBankAccount(BankAccountDTO bankAccountDTO);
 
-    public User userFromId(Long id) {
+    default User userFromId(Long id) {
         if (id == null) {
             return null;
         }
