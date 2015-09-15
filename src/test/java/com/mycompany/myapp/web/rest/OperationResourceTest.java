@@ -15,6 +15,7 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -68,6 +69,9 @@ public class OperationResourceTest {
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
+    @Inject
+    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+
     private MockMvc restOperationMockMvc;
 
     private Operation operation;
@@ -78,7 +82,9 @@ public class OperationResourceTest {
         OperationResource operationResource = new OperationResource();
         ReflectionTestUtils.setField(operationResource, "operationRepository", operationRepository);
         ReflectionTestUtils.setField(operationResource, "operationMapper", operationMapper);
-        this.restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource).setMessageConverters(jacksonMessageConverter).build();
+        this.restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before

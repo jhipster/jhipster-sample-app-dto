@@ -24,6 +24,11 @@ mail:
     from: sampleDTO@localhost
 
 
+spring:
+    mvc:
+        favicon:
+            enabled: false
+
 swagger:
     title: sampleDTO API
     description: sampleDTO applications and beyond!

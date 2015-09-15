@@ -10,6 +10,7 @@ import com.mycompany.myapp.web.rest.mapper.OperationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,11 +88,10 @@ public class OperationResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<OperationDTO>> getAllOperations(@RequestParam(value = "page" , required = false) Integer offset,
-                                  @RequestParam(value = "per_page", required = false) Integer limit)
+    public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
         throws URISyntaxException {
-        Page<Operation> page = operationRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations", offset, limit);
+        Page<Operation> page = operationRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
         return new ResponseEntity<>(page.getContent().stream()
             .map(operationMapper::operationToOperationDTO)
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);

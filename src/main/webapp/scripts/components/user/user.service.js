@@ -10,6 +10,7 @@ angular.module('sampledtoApp')
                         data = angular.fromJson(data);
                         return data;
                     }
-                }
+                },
+                'update': { method:'PUT' }
             });
         });
