@@ -9,6 +9,6 @@ angular.module('sampledtoApp')
                     AlertService.success(alertKey, { param : response.headers('X-sampledtoApp-params')});
                 }
                 return response;
-            },
+            }
         };
     });
