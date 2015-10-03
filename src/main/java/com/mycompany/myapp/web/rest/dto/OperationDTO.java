@@ -27,6 +27,7 @@ public class OperationDTO implements Serializable {
     private Long bankAccountId;
 
     private String bankAccountName;
+
     private Set<LabelDTO> labels = new HashSet<>();
 
     public Long getId() {
