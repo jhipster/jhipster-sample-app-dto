@@ -18,6 +18,7 @@ public class LabelDTO implements Serializable {
     @Size(min = 3)
     private String label;
 
+
     public Long getId() {
         return id;
     }
@@ -33,6 +34,7 @@ public class LabelDTO implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
+
 
     @Override
     public boolean equals(Object o) {

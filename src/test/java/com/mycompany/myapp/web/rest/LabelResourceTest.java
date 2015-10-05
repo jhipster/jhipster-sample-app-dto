@@ -164,7 +164,6 @@ public class LabelResourceTest {
 
         // Update the label
         label.setLabel(UPDATED_LABEL);
-        
         LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
 
         restLabelMockMvc.perform(put("/api/labels")

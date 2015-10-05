@@ -207,7 +207,6 @@ public class OperationResourceTest {
         operation.setDate(UPDATED_DATE);
         operation.setDescription(UPDATED_DESCRIPTION);
         operation.setAmount(UPDATED_AMOUNT);
-        
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
 
         restOperationMockMvc.perform(put("/api/operations")

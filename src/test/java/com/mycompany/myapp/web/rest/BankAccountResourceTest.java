@@ -192,7 +192,6 @@ public class BankAccountResourceTest {
         // Update the bankAccount
         bankAccount.setName(UPDATED_NAME);
         bankAccount.setBalance(UPDATED_BALANCE);
-        
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
 
         restBankAccountMockMvc.perform(put("/api/bankAccounts")

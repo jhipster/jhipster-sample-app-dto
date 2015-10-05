@@ -19,10 +19,13 @@ public class OperationDTO implements Serializable {
     @NotNull
     private DateTime date;
 
+
     private String description;
+
 
     @NotNull
     private BigDecimal amount;
+
 
     private Long bankAccountId;
 
@@ -46,6 +49,7 @@ public class OperationDTO implements Serializable {
         this.date = date;
     }
 
+
     public String getDescription() {
         return description;
     }
@@ -54,6 +58,7 @@ public class OperationDTO implements Serializable {
         this.description = description;
     }
 
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -61,6 +66,7 @@ public class OperationDTO implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
 
     public Long getBankAccountId() {
         return bankAccountId;
