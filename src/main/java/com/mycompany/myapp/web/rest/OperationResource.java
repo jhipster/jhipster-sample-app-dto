@@ -46,8 +46,8 @@ public class OperationResource {
      * POST  /operations -> Create a new operation.
      */
     @RequestMapping(value = "/operations",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operationDTO);
@@ -57,8 +57,8 @@ public class OperationResource {
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
         Operation result = operationRepository.save(operation);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("operation", result.getId().toString()))
-                .body(operationMapper.operationToOperationDTO(result));
+            .headers(HeaderUtil.createEntityCreationAlert("operation", result.getId().toString()))
+            .body(operationMapper.operationToOperationDTO(result));
     }
 
     /**
@@ -76,16 +76,16 @@ public class OperationResource {
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
         Operation result = operationRepository.save(operation);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert("operation", operationDTO.getId().toString()))
-                .body(operationMapper.operationToOperationDTO(result));
+            .headers(HeaderUtil.createEntityUpdateAlert("operation", operationDTO.getId().toString()))
+            .body(operationMapper.operationToOperationDTO(result));
     }
 
     /**
      * GET  /operations -> get all the operations.
      */
     @RequestMapping(value = "/operations",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
     public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
@@ -101,8 +101,8 @@ public class OperationResource {
      * GET  /operations/:id -> get the "id" operation.
      */
     @RequestMapping(value = "/operations/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
@@ -118,8 +118,8 @@ public class OperationResource {
      * DELETE  /operations/:id -> delete the "id" operation.
      */
     @RequestMapping(value = "/operations/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         log.debug("REST request to delete Operation : {}", id);

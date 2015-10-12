@@ -60,8 +60,8 @@ public class LabelDTO implements Serializable {
     @Override
     public String toString() {
         return "LabelDTO{" +
-                "id=" + id +
-                ", label='" + label + "'" +
-                '}';
+            "id=" + id +
+            ", label='" + label + "'" +
+            '}';
     }
 }

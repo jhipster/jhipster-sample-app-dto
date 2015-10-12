@@ -116,10 +116,10 @@ public class OperationDTO implements Serializable {
     @Override
     public String toString() {
         return "OperationDTO{" +
-                "id=" + id +
-                ", date='" + date + "'" +
-                ", description='" + description + "'" +
-                ", amount='" + amount + "'" +
-                '}';
+            "id=" + id +
+            ", date='" + date + "'" +
+            ", description='" + description + "'" +
+            ", amount='" + amount + "'" +
+            '}';
     }
 }

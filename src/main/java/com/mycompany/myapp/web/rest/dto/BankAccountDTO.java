@@ -93,9 +93,9 @@ public class BankAccountDTO implements Serializable {
     @Override
     public String toString() {
         return "BankAccountDTO{" +
-                "id=" + id +
-                ", name='" + name + "'" +
-                ", balance='" + balance + "'" +
-                '}';
+            "id=" + id +
+            ", name='" + name + "'" +
+            ", balance='" + balance + "'" +
+            '}';
     }
 }

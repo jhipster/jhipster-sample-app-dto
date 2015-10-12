@@ -43,8 +43,8 @@ public class LabelResource {
      * POST  /labels -> Create a new label.
      */
     @RequestMapping(value = "/labels",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<LabelDTO> createLabel(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
         log.debug("REST request to save Label : {}", labelDTO);
@@ -54,8 +54,8 @@ public class LabelResource {
         Label label = labelMapper.labelDTOToLabel(labelDTO);
         Label result = labelRepository.save(label);
         return ResponseEntity.created(new URI("/api/labels/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("label", result.getId().toString()))
-                .body(labelMapper.labelToLabelDTO(result));
+            .headers(HeaderUtil.createEntityCreationAlert("label", result.getId().toString()))
+            .body(labelMapper.labelToLabelDTO(result));
     }
 
     /**
@@ -73,16 +73,16 @@ public class LabelResource {
         Label label = labelMapper.labelDTOToLabel(labelDTO);
         Label result = labelRepository.save(label);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert("label", labelDTO.getId().toString()))
-                .body(labelMapper.labelToLabelDTO(result));
+            .headers(HeaderUtil.createEntityUpdateAlert("label", labelDTO.getId().toString()))
+            .body(labelMapper.labelToLabelDTO(result));
     }
 
     /**
      * GET  /labels -> get all the labels.
      */
     @RequestMapping(value = "/labels",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
     public List<LabelDTO> getAllLabels() {
@@ -96,8 +96,8 @@ public class LabelResource {
      * GET  /labels/:id -> get the "id" label.
      */
     @RequestMapping(value = "/labels/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<LabelDTO> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
@@ -113,8 +113,8 @@ public class LabelResource {
      * DELETE  /labels/:id -> delete the "id" label.
      */
     @RequestMapping(value = "/labels/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);

@@ -43,8 +43,8 @@ public class BankAccountResource {
      * POST  /bankAccounts -> Create a new bankAccount.
      */
     @RequestMapping(value = "/bankAccounts",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<BankAccountDTO> createBankAccount(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
         log.debug("REST request to save BankAccount : {}", bankAccountDTO);
@@ -54,8 +54,8 @@ public class BankAccountResource {
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
         BankAccount result = bankAccountRepository.save(bankAccount);
         return ResponseEntity.created(new URI("/api/bankAccounts/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("bankAccount", result.getId().toString()))
-                .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
+            .headers(HeaderUtil.createEntityCreationAlert("bankAccount", result.getId().toString()))
+            .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
     }
 
     /**
@@ -73,16 +73,16 @@ public class BankAccountResource {
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
         BankAccount result = bankAccountRepository.save(bankAccount);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert("bankAccount", bankAccountDTO.getId().toString()))
-                .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
+            .headers(HeaderUtil.createEntityUpdateAlert("bankAccount", bankAccountDTO.getId().toString()))
+            .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
     }
 
     /**
      * GET  /bankAccounts -> get all the bankAccounts.
      */
     @RequestMapping(value = "/bankAccounts",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
     public List<BankAccountDTO> getAllBankAccounts() {
@@ -96,8 +96,8 @@ public class BankAccountResource {
      * GET  /bankAccounts/:id -> get the "id" bankAccount.
      */
     @RequestMapping(value = "/bankAccounts/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<BankAccountDTO> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
@@ -113,8 +113,8 @@ public class BankAccountResource {
      * DELETE  /bankAccounts/:id -> delete the "id" bankAccount.
      */
     @RequestMapping(value = "/bankAccounts/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
