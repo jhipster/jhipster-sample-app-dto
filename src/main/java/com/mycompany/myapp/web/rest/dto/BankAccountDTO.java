@@ -18,10 +18,8 @@ public class BankAccountDTO implements Serializable {
     @NotNull
     private String name;
 
-
     @NotNull
     private BigDecimal balance;
-
 
     private Long userId;
 
@@ -43,7 +41,6 @@ public class BankAccountDTO implements Serializable {
         this.name = name;
     }
 
-
     public BigDecimal getBalance() {
         return balance;
     }
@@ -51,7 +48,6 @@ public class BankAccountDTO implements Serializable {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
-
 
     public Long getUserId() {
         return userId;

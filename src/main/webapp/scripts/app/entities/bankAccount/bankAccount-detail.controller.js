@@ -8,7 +8,9 @@ angular.module('sampledtoApp')
                 $scope.bankAccount = result;
             });
         };
-        $rootScope.$on('sampledtoApp:bankAccountUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('sampledtoApp:bankAccountUpdate', function(event, result) {
             $scope.bankAccount = result;
         });
+        $scope.$on('$destroy', unsubscribe);
+
     });

@@ -1,6 +1,6 @@
 package com.mycompany.myapp.web.rest.dto;
 
-import org.joda.time.DateTime;
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,15 +17,12 @@ public class OperationDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private DateTime date;
-
+    private ZonedDateTime date;
 
     private String description;
 
-
     @NotNull
     private BigDecimal amount;
-
 
     private Long bankAccountId;
 
@@ -41,14 +38,13 @@ public class OperationDTO implements Serializable {
         this.id = id;
     }
 
-    public DateTime getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
-
 
     public String getDescription() {
         return description;
@@ -58,7 +54,6 @@ public class OperationDTO implements Serializable {
         this.description = description;
     }
 
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -66,7 +61,6 @@ public class OperationDTO implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
 
     public Long getBankAccountId() {
         return bankAccountId;

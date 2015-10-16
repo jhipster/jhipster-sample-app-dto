@@ -8,7 +8,9 @@ angular.module('sampledtoApp')
                 $scope.label = result;
             });
         };
-        $rootScope.$on('sampledtoApp:labelUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('sampledtoApp:labelUpdate', function(event, result) {
             $scope.label = result;
         });
+        $scope.$on('$destroy', unsubscribe);
+
     });
