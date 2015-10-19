@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .controller('MetricsModalController', function($scope, $modalInstance, threadDump) {
 
         $scope.threadDump = threadDump;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .factory('AuditsService', function ($http) {
         return {
             findAll: function () {

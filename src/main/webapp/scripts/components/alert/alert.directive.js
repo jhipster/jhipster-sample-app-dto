@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .directive('jhAlert', function(AlertService) {
 		return {
             restrict: 'E',
@@ -27,7 +27,7 @@ angular.module('sampledtoApp')
 	            function($scope) {
 	                $scope.alerts = AlertService.get();
 
-					var cleanHttpErrorListener = $rootScope.$on('sampledtoApp.httpError', function (event, httpResponse) {
+					var cleanHttpErrorListener = $rootScope.$on('sampleDTOApp.httpError', function (event, httpResponse) {
 					    var i;
 					    event.stopPropagation();
 					    switch (httpResponse.status) {
@@ -42,7 +42,7 @@ angular.module('sampledtoApp')
 					                    var fieldError = httpResponse.data.fieldErrors[i];
 					                    // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
 					                    var convertedField = fieldError.field.replace(/\[\d*\]/g, "[]");
-					                    var fieldName = $translate.instant('sampledtoApp.' + fieldError.objectName + '.' + convertedField);
+					                    var fieldName = $translate.instant('sampleDTOApp.' + fieldError.objectName + '.' + convertedField);
 					                    addErrorAlert('Field ' + fieldName + ' cannot be empty', 'error.' + fieldError.message, {fieldName: fieldName});
 					                }
 					            } else if (httpResponse.data && httpResponse.data.message) {

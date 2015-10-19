@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .service('ParseLinks', function () {
         this.parse = function (header) {
             if (header.length == 0) {

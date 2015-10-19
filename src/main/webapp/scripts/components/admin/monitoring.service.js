@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .factory('MonitoringService', function ($rootScope, $http) {
         return {
             getMetrics: function () {

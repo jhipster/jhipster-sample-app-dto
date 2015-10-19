@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .controller('MetricsController', function ($scope, MonitoringService, $modal) {
         $scope.metrics = {};
         $scope.updatingMetrics = true;

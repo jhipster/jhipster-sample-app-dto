@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('account', {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .controller('MainController', function ($scope, Principal) {
         Principal.identity().then(function(account) {
             $scope.account = account;

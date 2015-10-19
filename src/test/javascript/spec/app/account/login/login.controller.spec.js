@@ -2,7 +2,7 @@
 
 describe('Controllers Tests ', function () {
 
-    beforeEach(module('sampledtoApp'));
+    beforeEach(module('sampleDTOApp'));
 
     describe('LoginController', function () {
         var $scope;

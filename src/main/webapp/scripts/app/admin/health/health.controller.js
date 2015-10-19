@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .controller('HealthController', function ($scope, MonitoringService, $modal) {
         $scope.updatingHealth = true;
         $scope.separator = '.';

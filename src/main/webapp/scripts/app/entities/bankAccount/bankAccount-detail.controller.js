@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .controller('BankAccountDetailController', function ($scope, $rootScope, $stateParams, entity, BankAccount, User, Operation) {
         $scope.bankAccount = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('sampledtoApp')
                 $scope.bankAccount = result;
             });
         };
-        var unsubscribe = $rootScope.$on('sampledtoApp:bankAccountUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('sampleDTOApp:bankAccountUpdate', function(event, result) {
             $scope.bankAccount = result;
         });
         $scope.$on('$destroy', unsubscribe);

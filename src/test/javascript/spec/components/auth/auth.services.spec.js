@@ -2,8 +2,6 @@
 
 describe('Services Tests ', function () {
 
-    beforeEach(module('sampledtoApp'));
-
     describe('Auth', function () {
         var $httpBackend, spiedLocalStorageService, authService, spiedAuthServerProvider;
 

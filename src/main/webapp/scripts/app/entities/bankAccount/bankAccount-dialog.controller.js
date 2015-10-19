@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp').controller('BankAccountDialogController',
+angular.module('sampleDTOApp').controller('BankAccountDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'BankAccount', 'User', 'Operation',
         function($scope, $stateParams, $modalInstance, entity, BankAccount, User, Operation) {
 
@@ -14,7 +14,7 @@ angular.module('sampledtoApp').controller('BankAccountDialogController',
         };
 
         var onSaveFinished = function (result) {
-            $scope.$emit('sampledtoApp:bankAccountUpdate', result);
+            $scope.$emit('sampleDTOApp:bankAccountUpdate', result);
             $modalInstance.close(result);
         };
 

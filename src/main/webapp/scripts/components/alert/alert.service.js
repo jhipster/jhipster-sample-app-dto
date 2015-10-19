@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .factory('AlertService', function ($timeout, $sce,$translate) {
         var exports = {
             factory: factory,

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .factory('Register', function ($resource) {
         return $resource('api/register', {}, {
         });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampledtoApp')
+angular.module('sampleDTOApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('bankAccount', {
@@ -8,7 +8,7 @@ angular.module('sampledtoApp')
                 url: '/bankAccounts',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'sampledtoApp.bankAccount.home.title'
+                    pageTitle: 'sampleDTOApp.bankAccount.home.title'
                 },
                 views: {
                     'content@': {
@@ -29,7 +29,7 @@ angular.module('sampledtoApp')
                 url: '/bankAccount/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'sampledtoApp.bankAccount.detail.title'
+                    pageTitle: 'sampleDTOApp.bankAccount.detail.title'
                 },
                 views: {
                     'content@': {
