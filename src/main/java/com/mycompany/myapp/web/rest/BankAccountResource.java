@@ -32,13 +32,13 @@ import java.util.stream.Collectors;
 public class BankAccountResource {
 
     private final Logger log = LoggerFactory.getLogger(BankAccountResource.class);
-
+        
     @Inject
     private BankAccountRepository bankAccountRepository;
-
+    
     @Inject
     private BankAccountMapper bankAccountMapper;
-
+    
     /**
      * POST  /bankAccounts -> Create a new bankAccount.
      */
@@ -52,10 +52,11 @@ public class BankAccountResource {
             return ResponseEntity.badRequest().header("Failure", "A new bankAccount cannot already have an ID").body(null);
         }
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
-        BankAccount result = bankAccountRepository.save(bankAccount);
+        bankAccount = bankAccountRepository.save(bankAccount);
+        BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
         return ResponseEntity.created(new URI("/api/bankAccounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("bankAccount", result.getId().toString()))
-            .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
+            .body(result);
     }
 
     /**
@@ -71,10 +72,11 @@ public class BankAccountResource {
             return createBankAccount(bankAccountDTO);
         }
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
-        BankAccount result = bankAccountRepository.save(bankAccount);
+        bankAccount = bankAccountRepository.save(bankAccount);
+        BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("bankAccount", bankAccountDTO.getId().toString()))
-            .body(bankAccountMapper.bankAccountToBankAccountDTO(result));
+            .body(result);
     }
 
     /**
@@ -88,10 +90,10 @@ public class BankAccountResource {
     public List<BankAccountDTO> getAllBankAccounts() {
         log.debug("REST request to get all BankAccounts");
         return bankAccountRepository.findAll().stream()
-            .map(bankAccount -> bankAccountMapper.bankAccountToBankAccountDTO(bankAccount))
+            .map(bankAccountMapper::bankAccountToBankAccountDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-    }
-
+            }
+    
     /**
      * GET  /bankAccounts/:id -> get the "id" bankAccount.
      */
@@ -101,10 +103,11 @@ public class BankAccountResource {
     @Timed
     public ResponseEntity<BankAccountDTO> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
-        return Optional.ofNullable(bankAccountRepository.findOne(id))
-            .map(bankAccountMapper::bankAccountToBankAccountDTO)
-            .map(bankAccountDTO -> new ResponseEntity<>(
-                bankAccountDTO,
+        BankAccount bankAccount = bankAccountRepository.findOne(id);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        return Optional.ofNullable(bankAccountDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

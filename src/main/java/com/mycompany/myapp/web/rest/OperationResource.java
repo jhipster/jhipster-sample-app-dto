@@ -35,13 +35,13 @@ import java.util.stream.Collectors;
 public class OperationResource {
 
     private final Logger log = LoggerFactory.getLogger(OperationResource.class);
-
+        
     @Inject
     private OperationRepository operationRepository;
-
+    
     @Inject
     private OperationMapper operationMapper;
-
+    
     /**
      * POST  /operations -> Create a new operation.
      */
@@ -55,10 +55,11 @@ public class OperationResource {
             return ResponseEntity.badRequest().header("Failure", "A new operation cannot already have an ID").body(null);
         }
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
-        Operation result = operationRepository.save(operation);
+        operation = operationRepository.save(operation);
+        OperationDTO result = operationMapper.operationToOperationDTO(operation);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("operation", result.getId().toString()))
-            .body(operationMapper.operationToOperationDTO(result));
+            .body(result);
     }
 
     /**
@@ -74,10 +75,11 @@ public class OperationResource {
             return createOperation(operationDTO);
         }
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
-        Operation result = operationRepository.save(operation);
+        operation = operationRepository.save(operation);
+        OperationDTO result = operationMapper.operationToOperationDTO(operation);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("operation", operationDTO.getId().toString()))
-            .body(operationMapper.operationToOperationDTO(result));
+            .body(result);
     }
 
     /**
@@ -90,13 +92,14 @@ public class OperationResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
         throws URISyntaxException {
-        Page<Operation> page = operationRepository.findAll(pageable);
+        log.debug("REST request to get a page of Operations");
+        Page<Operation> page = operationRepository.findAll(pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
         return new ResponseEntity<>(page.getContent().stream()
             .map(operationMapper::operationToOperationDTO)
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
     }
-
+    
     /**
      * GET  /operations/:id -> get the "id" operation.
      */
@@ -106,10 +109,11 @@ public class OperationResource {
     @Timed
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
-        return Optional.ofNullable(operationRepository.findOneWithEagerRelationships(id))
-            .map(operationMapper::operationToOperationDTO)
-            .map(operationDTO -> new ResponseEntity<>(
-                operationDTO,
+        Operation operation = operationRepository.findOneWithEagerRelationships(id);
+        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        return Optional.ofNullable(operationDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

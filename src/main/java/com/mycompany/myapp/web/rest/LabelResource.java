@@ -32,13 +32,13 @@ import java.util.stream.Collectors;
 public class LabelResource {
 
     private final Logger log = LoggerFactory.getLogger(LabelResource.class);
-
+        
     @Inject
     private LabelRepository labelRepository;
-
+    
     @Inject
     private LabelMapper labelMapper;
-
+    
     /**
      * POST  /labels -> Create a new label.
      */
@@ -52,10 +52,11 @@ public class LabelResource {
             return ResponseEntity.badRequest().header("Failure", "A new label cannot already have an ID").body(null);
         }
         Label label = labelMapper.labelDTOToLabel(labelDTO);
-        Label result = labelRepository.save(label);
+        label = labelRepository.save(label);
+        LabelDTO result = labelMapper.labelToLabelDTO(label);
         return ResponseEntity.created(new URI("/api/labels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("label", result.getId().toString()))
-            .body(labelMapper.labelToLabelDTO(result));
+            .body(result);
     }
 
     /**
@@ -71,10 +72,11 @@ public class LabelResource {
             return createLabel(labelDTO);
         }
         Label label = labelMapper.labelDTOToLabel(labelDTO);
-        Label result = labelRepository.save(label);
+        label = labelRepository.save(label);
+        LabelDTO result = labelMapper.labelToLabelDTO(label);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("label", labelDTO.getId().toString()))
-            .body(labelMapper.labelToLabelDTO(result));
+            .body(result);
     }
 
     /**
@@ -88,10 +90,10 @@ public class LabelResource {
     public List<LabelDTO> getAllLabels() {
         log.debug("REST request to get all Labels");
         return labelRepository.findAll().stream()
-            .map(label -> labelMapper.labelToLabelDTO(label))
+            .map(labelMapper::labelToLabelDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-    }
-
+            }
+    
     /**
      * GET  /labels/:id -> get the "id" label.
      */
@@ -101,10 +103,11 @@ public class LabelResource {
     @Timed
     public ResponseEntity<LabelDTO> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
-        return Optional.ofNullable(labelRepository.findOne(id))
-            .map(labelMapper::labelToLabelDTO)
-            .map(labelDTO -> new ResponseEntity<>(
-                labelDTO,
+        Label label = labelRepository.findOne(id);
+        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        return Optional.ofNullable(labelDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

@@ -14,12 +14,12 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th translate="global.field.id">ID</th>
-                    <th translate="sampleDTOApp.operation.date">Date</th>
-                    <th translate="sampleDTOApp.operation.description">Description</th>
-                    <th translate="sampleDTOApp.operation.amount">Amount</th>
-                    <th translate="sampleDTOApp.operation.bankAccount">bankAccount</th>
+                <tr jh-sort="predicate" ascending="reverse" callback="reset()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="date"><span translate="sampleDTOApp.operation.date">Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span translate="sampleDTOApp.operation.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="amount"><span translate="sampleDTOApp.operation.amount">Amount</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="bankAccountName"><span translate="sampleDTOApp.operation.bankAccount">bankAccount</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
