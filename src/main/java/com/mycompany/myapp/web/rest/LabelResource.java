@@ -49,7 +49,7 @@ public class LabelResource {
     public ResponseEntity<LabelDTO> createLabel(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
         log.debug("REST request to save Label : {}", labelDTO);
         if (labelDTO.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new label cannot already have an ID").body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("label", "idexists", "A new label cannot already have an ID")).body(null);
         }
         Label label = labelMapper.labelDTOToLabel(labelDTO);
         label = labelRepository.save(label);
@@ -93,7 +93,7 @@ public class LabelResource {
             .map(labelMapper::labelToLabelDTO)
             .collect(Collectors.toCollection(LinkedList::new));
             }
-    
+
     /**
      * GET  /labels/:id -> get the "id" label.
      */

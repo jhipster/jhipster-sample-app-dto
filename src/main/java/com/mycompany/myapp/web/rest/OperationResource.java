@@ -52,7 +52,7 @@ public class OperationResource {
     public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operationDTO);
         if (operationDTO.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new operation cannot already have an ID").body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("operation", "idexists", "A new operation cannot already have an ID")).body(null);
         }
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
         operation = operationRepository.save(operation);
@@ -99,7 +99,7 @@ public class OperationResource {
             .map(operationMapper::operationToOperationDTO)
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
     }
-    
+
     /**
      * GET  /operations/:id -> get the "id" operation.
      */

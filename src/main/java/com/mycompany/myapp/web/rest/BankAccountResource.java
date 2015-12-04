@@ -49,7 +49,7 @@ public class BankAccountResource {
     public ResponseEntity<BankAccountDTO> createBankAccount(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
         log.debug("REST request to save BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new bankAccount cannot already have an ID").body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("bankAccount", "idexists", "A new bankAccount cannot already have an ID")).body(null);
         }
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
@@ -93,7 +93,7 @@ public class BankAccountResource {
             .map(bankAccountMapper::bankAccountToBankAccountDTO)
             .collect(Collectors.toCollection(LinkedList::new));
             }
-    
+
     /**
      * GET  /bankAccounts/:id -> get the "id" bankAccount.
      */
