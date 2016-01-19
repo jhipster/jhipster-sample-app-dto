@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
 	.controller('LabelDeleteController', function($scope, $uibModalInstance, entity, Label) {
 
         $scope.label = entity;

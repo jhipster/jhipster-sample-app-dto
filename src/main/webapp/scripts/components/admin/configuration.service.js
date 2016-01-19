@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .factory('ConfigurationService', function ($rootScope, $filter, $http) {
         return {
             get: function() {

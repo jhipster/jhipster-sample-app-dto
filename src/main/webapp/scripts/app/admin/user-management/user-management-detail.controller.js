@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .controller('UserManagementDetailController', function ($scope, $stateParams, User) {
         $scope.user = {};
         $scope.load = function (login) {

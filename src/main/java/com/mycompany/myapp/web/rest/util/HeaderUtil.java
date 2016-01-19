@@ -10,27 +10,27 @@ public class HeaderUtil {
 
     public static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-sampleDTOApp-alert", message);
-        headers.add("X-sampleDTOApp-params", param);
+        headers.add("X-sampledtoApp-alert", message);
+        headers.add("X-sampledtoApp-params", param);
         return headers;
     }
 
     public static HttpHeaders createEntityCreationAlert(String entityName, String param) {
-        return createAlert("sampleDTOApp." + entityName + ".created", param);
+        return createAlert("sampledtoApp." + entityName + ".created", param);
     }
 
     public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
-        return createAlert("sampleDTOApp." + entityName + ".updated", param);
+        return createAlert("sampledtoApp." + entityName + ".updated", param);
     }
 
     public static HttpHeaders createEntityDeletionAlert(String entityName, String param) {
-        return createAlert("sampleDTOApp." + entityName + ".deleted", param);
+        return createAlert("sampledtoApp." + entityName + ".deleted", param);
     }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-sampleDTOApp-error", "error." + errorKey);
-        headers.add("X-sampleDTOApp-params", entityName);
+        headers.add("X-sampledtoApp-error", "error." + errorKey);
+        headers.add("X-sampledtoApp-params", entityName);
         return headers;
     }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .controller('OperationController', function ($scope, $state, Operation, ParseLinks) {
 
         $scope.operations = [];

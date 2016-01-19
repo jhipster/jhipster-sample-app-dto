@@ -19,10 +19,13 @@ public class OperationDTO implements Serializable {
     @NotNull
     private ZonedDateTime date;
 
+
     private String description;
+
 
     @NotNull
     private BigDecimal amount;
+
 
     private Long bankAccountId;
 
@@ -37,7 +40,6 @@ public class OperationDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
     public ZonedDateTime getDate() {
         return date;
     }
@@ -45,7 +47,6 @@ public class OperationDTO implements Serializable {
     public void setDate(ZonedDateTime date) {
         this.date = date;
     }
-
     public String getDescription() {
         return description;
     }
@@ -53,7 +54,6 @@ public class OperationDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
     public BigDecimal getAmount() {
         return amount;
     }

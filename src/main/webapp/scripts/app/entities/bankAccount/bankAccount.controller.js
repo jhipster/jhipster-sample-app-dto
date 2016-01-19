@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .controller('BankAccountController', function ($scope, $state, BankAccount) {
 
         $scope.bankAccounts = [];

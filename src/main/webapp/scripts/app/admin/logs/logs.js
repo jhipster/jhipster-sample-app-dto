@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('logs', {

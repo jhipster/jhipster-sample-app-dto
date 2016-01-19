@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('sampleDTOApp')
+angular.module('sampledtoApp')
     .directive('maxbytes', function ($q) {
         function endsWith(suffix, str) {
             return str.indexOf(suffix, str.length - suffix.length) !== -1;
