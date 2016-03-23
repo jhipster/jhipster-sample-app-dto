@@ -1,6 +1,6 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.Application;
+import com.mycompany.myapp.SampleDtoApp;
 import com.mycompany.myapp.domain.Label;
 import com.mycompany.myapp.repository.LabelRepository;
 import com.mycompany.myapp.web.rest.dto.LabelDTO;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LabelResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = SampleDtoApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class LabelResourceIntTest {
@@ -159,12 +159,13 @@ public class LabelResourceIntTest {
     public void updateLabel() throws Exception {
         // Initialize the database
         labelRepository.saveAndFlush(label);
-
-		int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
 
         // Update the label
-        label.setLabel(UPDATED_LABEL);
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        Label updatedLabel = new Label();
+        updatedLabel.setId(label.getId());
+        updatedLabel.setLabel(UPDATED_LABEL);
+        LabelDTO labelDTO = labelMapper.labelToLabelDTO(updatedLabel);
 
         restLabelMockMvc.perform(put("/api/labels")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -183,8 +184,7 @@ public class LabelResourceIntTest {
     public void deleteLabel() throws Exception {
         // Initialize the database
         labelRepository.saveAndFlush(label);
-
-		int databaseSizeBeforeDelete = labelRepository.findAll().size();
+        int databaseSizeBeforeDelete = labelRepository.findAll().size();
 
         // Get the label
         restLabelMockMvc.perform(delete("/api/labels/{id}", label.getId())

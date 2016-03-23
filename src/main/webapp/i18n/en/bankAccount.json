@@ -1,5 +1,5 @@
 {
-    "sampledtoApp": {
+    "sampleDtoApp": {
         "bankAccount" : {
             "home": {
                 "title": "BankAccounts",

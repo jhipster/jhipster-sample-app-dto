@@ -40,7 +40,11 @@ public class LabelResource {
     private LabelMapper labelMapper;
     
     /**
-     * POST  /labels -> Create a new label.
+     * POST  /labels : Create a new label.
+     *
+     * @param labelDTO the labelDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new labelDTO, or with status 400 (Bad Request) if the label has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/labels",
         method = RequestMethod.POST,
@@ -60,7 +64,13 @@ public class LabelResource {
     }
 
     /**
-     * PUT  /labels -> Updates an existing label.
+     * PUT  /labels : Updates an existing label.
+     *
+     * @param labelDTO the labelDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated labelDTO,
+     * or with status 400 (Bad Request) if the labelDTO is not valid,
+     * or with status 500 (Internal Server Error) if the labelDTO couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/labels",
         method = RequestMethod.PUT,
@@ -80,7 +90,9 @@ public class LabelResource {
     }
 
     /**
-     * GET  /labels -> get all the labels.
+     * GET  /labels : get all the labels.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of labels in body
      */
     @RequestMapping(value = "/labels",
         method = RequestMethod.GET,
@@ -89,13 +101,15 @@ public class LabelResource {
     @Transactional(readOnly = true)
     public List<LabelDTO> getAllLabels() {
         log.debug("REST request to get all Labels");
-        return labelRepository.findAll().stream()
-            .map(labelMapper::labelToLabelDTO)
-            .collect(Collectors.toCollection(LinkedList::new));
-            }
+        List<Label> labels = labelRepository.findAll();
+        return labelMapper.labelsToLabelDTOs(labels);
+    }
 
     /**
-     * GET  /labels/:id -> get the "id" label.
+     * GET  /labels/:id : get the "id" label.
+     *
+     * @param id the id of the labelDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the labelDTO, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/labels/{id}",
         method = RequestMethod.GET,
@@ -113,7 +127,10 @@ public class LabelResource {
     }
 
     /**
-     * DELETE  /labels/:id -> delete the "id" label.
+     * DELETE  /labels/:id : delete the "id" label.
+     *
+     * @param id the id of the labelDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/labels/{id}",
         method = RequestMethod.DELETE,
@@ -124,4 +141,5 @@ public class LabelResource {
         labelRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("label", id.toString())).build();
     }
+
 }

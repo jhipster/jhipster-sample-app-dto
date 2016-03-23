@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.web.rest.dto.OperationDTO;
 
 import org.mapstruct.*;
+import java.util.List;
 
 /**
  * Mapper for the entity Operation and its DTO OperationDTO.
@@ -15,8 +16,12 @@ public interface OperationMapper {
     @Mapping(source = "bankAccount.name", target = "bankAccountName")
     OperationDTO operationToOperationDTO(Operation operation);
 
+    List<OperationDTO> operationsToOperationDTOs(List<Operation> operations);
+
     @Mapping(source = "bankAccountId", target = "bankAccount")
     Operation operationDTOToOperation(OperationDTO operationDTO);
+
+    List<Operation> operationDTOsToOperations(List<OperationDTO> operationDTOs);
 
     default BankAccount bankAccountFromId(Long id) {
         if (id == null) {

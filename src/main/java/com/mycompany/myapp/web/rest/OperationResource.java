@@ -43,7 +43,11 @@ public class OperationResource {
     private OperationMapper operationMapper;
     
     /**
-     * POST  /operations -> Create a new operation.
+     * POST  /operations : Create a new operation.
+     *
+     * @param operationDTO the operationDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new operationDTO, or with status 400 (Bad Request) if the operation has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/operations",
         method = RequestMethod.POST,
@@ -63,7 +67,13 @@ public class OperationResource {
     }
 
     /**
-     * PUT  /operations -> Updates an existing operation.
+     * PUT  /operations : Updates an existing operation.
+     *
+     * @param operationDTO the operationDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated operationDTO,
+     * or with status 400 (Bad Request) if the operationDTO is not valid,
+     * or with status 500 (Internal Server Error) if the operationDTO couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/operations",
         method = RequestMethod.PUT,
@@ -83,7 +93,11 @@ public class OperationResource {
     }
 
     /**
-     * GET  /operations -> get all the operations.
+     * GET  /operations : get all the operations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of operations in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/operations",
         method = RequestMethod.GET,
@@ -95,13 +109,14 @@ public class OperationResource {
         log.debug("REST request to get a page of Operations");
         Page<Operation> page = operationRepository.findAll(pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
-        return new ResponseEntity<>(page.getContent().stream()
-            .map(operationMapper::operationToOperationDTO)
-            .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
+        return new ResponseEntity<>(operationMapper.operationsToOperationDTOs(page.getContent()), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /operations/:id -> get the "id" operation.
+     * GET  /operations/:id : get the "id" operation.
+     *
+     * @param id the id of the operationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the operationDTO, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/operations/{id}",
         method = RequestMethod.GET,
@@ -119,7 +134,10 @@ public class OperationResource {
     }
 
     /**
-     * DELETE  /operations/:id -> delete the "id" operation.
+     * DELETE  /operations/:id : delete the "id" operation.
+     *
+     * @param id the id of the operationDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/operations/{id}",
         method = RequestMethod.DELETE,
@@ -130,4 +148,5 @@ public class OperationResource {
         operationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("operation", id.toString())).build();
     }
+
 }

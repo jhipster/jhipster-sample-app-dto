@@ -12,7 +12,6 @@
 
 spring:
     datasource:
-        driver-class-name: org.h2.jdbcx.JdbcDataSource
         url: jdbc:h2:mem:sampleDTO;DB_CLOSE_DELAY=-1
         name:
         username:
@@ -59,9 +58,9 @@ jhipster:
         maxPoolSize: 50
         queueCapacity: 10000
     security:
-        rememberme:
+        rememberMe:
             # security key (this key should be unique for your application, and kept secret)
-            key: 6f9fb4b738d0acb910fbead1e2b0bbb7e9731d21
+            key: 40cf2e76812024d7d37f5f7e0e90446dfc3648ca
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
     swagger:
@@ -69,6 +68,8 @@ jhipster:
         description: sampleDTO API documentation
         version: 0.0.1
         termsOfServiceUrl:
-        contact:
+        contactName:
+        contactUrl:
+        contactEmail:
         license:
         licenseUrl:

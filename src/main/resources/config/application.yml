@@ -11,14 +11,17 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+
 spring:
+    application:
+        name: sampleDTO
     jpa:
         open-in-view: false
         hibernate:
             ddl-auto: none
             naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
     messages:
-        basename: classpath:/i18n/messages
+        basename: i18n/messages
     mvc:
         favicon:
             enabled: false
@@ -48,14 +51,16 @@ jhipster:
     mail:
         from: sampleDTO@localhost
     security:
-        rememberme:
+        rememberMe:
             # security key (this key should be unique for your application, and kept secret)
-            key: 6f9fb4b738d0acb910fbead1e2b0bbb7e9731d21
+            key: 40cf2e76812024d7d37f5f7e0e90446dfc3648ca
     swagger:
         title: sampleDTO API
         description: sampleDTO API documentation
         version: 0.0.1
         termsOfServiceUrl:
-        contact:
+        contactName:
+        contactUrl:
+        contactEmail:
         license:
         licenseUrl:
