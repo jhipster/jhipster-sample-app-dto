@@ -28,6 +28,7 @@ public class OperationDTO implements Serializable {
 
 
     private Long bankAccountId;
+    
 
     private String bankAccountName;
 
@@ -69,6 +70,7 @@ public class OperationDTO implements Serializable {
     public void setBankAccountId(Long bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
+
 
     public String getBankAccountName() {
         return bankAccountName;

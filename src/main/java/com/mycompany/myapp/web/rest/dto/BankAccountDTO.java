@@ -24,6 +24,7 @@ public class BankAccountDTO implements Serializable {
 
 
     private Long userId;
+    
 
     private String userLogin;
 
@@ -56,6 +57,7 @@ public class BankAccountDTO implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
 
     public String getUserLogin() {
         return userLogin;

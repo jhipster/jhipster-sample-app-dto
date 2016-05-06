@@ -56,6 +56,10 @@ jhipster:
         timeToLiveSeconds: 3600
         ehcache:
             maxBytesLocalHeap: 16M
+    security:
+        rememberMe:
+            # security key (this key should be unique for your application, and kept secret)
+            key: 40cf2e76812024d7d37f5f7e0e90446dfc3648ca
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: sampleDTO@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -69,7 +73,7 @@ jhipster:
             host: localhost
             port: 2003
             prefix: sampleDTO
-        logs: # report metrics in the logs
+        logs: # Reports Dropwizard metrics in the logs
             enabled: false
             reportFrequency: 60 # in seconds
     logging:
