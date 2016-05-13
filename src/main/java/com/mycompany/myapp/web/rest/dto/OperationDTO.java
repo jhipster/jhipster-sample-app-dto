@@ -19,9 +19,7 @@ public class OperationDTO implements Serializable {
     @NotNull
     private ZonedDateTime date;
 
-
     private String description;
-
 
     @NotNull
     private BigDecimal amount;

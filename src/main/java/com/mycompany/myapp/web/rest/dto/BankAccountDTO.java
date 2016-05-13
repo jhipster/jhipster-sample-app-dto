@@ -18,7 +18,6 @@ public class BankAccountDTO implements Serializable {
     @NotNull
     private String name;
 
-
     @NotNull
     private BigDecimal balance;
 
