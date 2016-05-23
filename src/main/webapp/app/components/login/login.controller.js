@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .controller('LoginController', LoginController);
 
     LoginController.$inject = ['$rootScope', '$state', '$timeout', 'Auth', '$uibModalInstance'];

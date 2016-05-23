@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .factory('Principal', Principal);
 
     Principal.$inject = ['$q', 'Account'];

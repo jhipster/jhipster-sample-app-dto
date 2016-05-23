@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .controller('JhiConfigurationController', JhiConfigurationController);
 
     JhiConfigurationController.$inject = ['$filter','JhiConfigurationService'];

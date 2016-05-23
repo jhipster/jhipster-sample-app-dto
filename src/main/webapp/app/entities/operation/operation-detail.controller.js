@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .controller('OperationDetailController', OperationDetailController);
 
     OperationDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Operation', 'BankAccount', 'Label'];
@@ -11,7 +11,7 @@
         var vm = this;
         vm.operation = entity;
         
-        var unsubscribe = $rootScope.$on('sampleDtoApp:operationUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('jhipsterDtoSampleApplicationApp:operationUpdate', function(event, result) {
             vm.operation = result;
         });
         $scope.$on('$destroy', unsubscribe);

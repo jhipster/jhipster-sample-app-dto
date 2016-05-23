@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('sampleDtoApp')
+    angular.module('jhipsterDtoSampleApplicationApp')
         .controller('HealthModalController', HealthModalController);
 
     HealthModalController.$inject = ['$uibModalInstance', 'currentHealth', 'baseName', 'subSystemName'];

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .factory('Sessions', Sessions);
 
     Sessions.$inject = ['$resource'];

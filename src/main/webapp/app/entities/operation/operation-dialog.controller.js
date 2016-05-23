@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .controller('OperationDialogController', OperationDialogController);
 
     OperationDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Operation', 'BankAccount', 'Label'];
@@ -18,7 +18,7 @@
         });
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('sampleDtoApp:operationUpdate', result);
+            $scope.$emit('jhipsterDtoSampleApplicationApp:operationUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         };

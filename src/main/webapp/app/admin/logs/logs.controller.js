@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .controller('LogsController', LogsController);
 
     LogsController.$inject = ['LogsService'];

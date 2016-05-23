@@ -1,15 +1,15 @@
 version: '2'
 services:
-    sampledto-app:
-        image: sampledto
+    jhipsterdtosampleapplication-app:
+        image: jhipsterdtosampleapplication
         external_links:
-            - sampledto-mysql:mysql
+            - jhipsterdtosampleapplication-mysql:mysql
         environment:
             - SPRING_PROFILES_ACTIVE=prod
-            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/sampledto?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/jhipsterdtosampleapplication?useUnicode=true&characterEncoding=utf8&useSSL=false
         ports:
             - 8080:8080
-    sampledto-mysql:
+    jhipsterdtosampleapplication-mysql:
         extends:
             file: mysql.yml
-            service: sampledto-mysql
+            service: jhipsterdtosampleapplication-mysql

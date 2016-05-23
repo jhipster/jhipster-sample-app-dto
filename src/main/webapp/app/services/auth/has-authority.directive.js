@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .directive('hasAuthority', hasAuthority);
 
     function hasAuthority(Principal) {

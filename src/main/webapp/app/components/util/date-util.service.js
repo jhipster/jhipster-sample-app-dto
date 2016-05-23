@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .factory('DateUtils', DateUtils);
 
     DateUtils.$inject = ['$filter'];

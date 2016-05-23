@@ -1,14 +1,14 @@
 version: '2'
 services:
-    sampledto-mysql:
-        container_name: sampledto-mysql
-        image: mysql:5.7.11
+    jhipsterdtosampleapplication-mysql:
+        container_name: jhipsterdtosampleapplication-mysql
+        image: mysql:5.7.12
         # volumes:
-        #     - ~/volumes/jhipster/sampleDTO/mysql/:/var/lib/mysql/
+        #     - ~/volumes/jhipster/jhipsterDtoSampleApplication/mysql/:/var/lib/mysql/
         environment:
             - MYSQL_USER=root
             - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-            - MYSQL_DATABASE=sampledto
+            - MYSQL_DATABASE=jhipsterdtosampleapplication
         ports:
             - 3306:3306
         command: mysqld --lower_case_table_names=1 --skip-ssl

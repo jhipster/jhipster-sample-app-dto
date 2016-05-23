@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp', [
+        .module('jhipsterDtoSampleApplicationApp', [
             'ngStorage', 
             'tmh.dynamicLocale',
             'pascalprecht.translate', 

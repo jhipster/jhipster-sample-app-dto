@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .factory('Label', Label);
 
     Label.$inject = ['$resource'];

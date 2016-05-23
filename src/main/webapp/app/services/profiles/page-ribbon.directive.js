@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .directive('pageRibbon', pageRibbon);
 
     function pageRibbon(ProfileService, $rootScope, $translate) {

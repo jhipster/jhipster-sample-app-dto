@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .filter('findLanguageFromKey', findLanguageFromKey);
 
     function findLanguageFromKey() {

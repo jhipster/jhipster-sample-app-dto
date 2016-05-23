@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('sampleDtoApp')
+        .module('jhipsterDtoSampleApplicationApp')
         .config(localStorageConfig);
 
     localStorageConfig.$inject = ['$localStorageProvider'];
