@@ -103,7 +103,6 @@ public class OperationResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Transactional(readOnly = true)
     public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Operations");

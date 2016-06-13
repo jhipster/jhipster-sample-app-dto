@@ -98,7 +98,6 @@ public class LabelResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Transactional(readOnly = true)
     public List<LabelDTO> getAllLabels() {
         log.debug("REST request to get all Labels");
         List<Label> labels = labelRepository.findAll();
