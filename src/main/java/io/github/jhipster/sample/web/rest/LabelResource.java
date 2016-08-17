@@ -2,10 +2,11 @@ package io.github.jhipster.sample.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.sample.domain.Label;
+
 import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
-import io.github.jhipster.sample.web.rest.dto.LabelDTO;
-import io.github.jhipster.sample.web.rest.mapper.LabelMapper;
+import io.github.jhipster.sample.service.dto.LabelDTO;
+import io.github.jhipster.sample.service.mapper.LabelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -34,10 +35,10 @@ public class LabelResource {
         
     @Inject
     private LabelRepository labelRepository;
-    
+
     @Inject
     private LabelMapper labelMapper;
-    
+
     /**
      * POST  /labels : Create a new label.
      *

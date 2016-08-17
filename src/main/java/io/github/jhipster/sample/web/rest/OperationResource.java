@@ -2,11 +2,12 @@ package io.github.jhipster.sample.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.sample.domain.Operation;
+
 import io.github.jhipster.sample.repository.OperationRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.web.rest.util.PaginationUtil;
-import io.github.jhipster.sample.web.rest.dto.OperationDTO;
-import io.github.jhipster.sample.web.rest.mapper.OperationMapper;
+import io.github.jhipster.sample.service.dto.OperationDTO;
+import io.github.jhipster.sample.service.mapper.OperationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,10 +38,10 @@ public class OperationResource {
         
     @Inject
     private OperationRepository operationRepository;
-    
+
     @Inject
     private OperationMapper operationMapper;
-    
+
     /**
      * POST  /operations : Create a new operation.
      *
@@ -105,7 +106,7 @@ public class OperationResource {
     public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Operations");
-        Page<Operation> page = operationRepository.findAll(pageable); 
+        Page<Operation> page = operationRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
         return new ResponseEntity<>(operationMapper.operationsToOperationDTOs(page.getContent()), headers, HttpStatus.OK);
     }

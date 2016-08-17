@@ -2,10 +2,11 @@ package io.github.jhipster.sample.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.sample.domain.BankAccount;
+
 import io.github.jhipster.sample.repository.BankAccountRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
-import io.github.jhipster.sample.web.rest.dto.BankAccountDTO;
-import io.github.jhipster.sample.web.rest.mapper.BankAccountMapper;
+import io.github.jhipster.sample.service.dto.BankAccountDTO;
+import io.github.jhipster.sample.service.mapper.BankAccountMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -34,10 +35,10 @@ public class BankAccountResource {
         
     @Inject
     private BankAccountRepository bankAccountRepository;
-    
+
     @Inject
     private BankAccountMapper bankAccountMapper;
-    
+
     /**
      * POST  /bank-accounts : Create a new bankAccount.
      *
