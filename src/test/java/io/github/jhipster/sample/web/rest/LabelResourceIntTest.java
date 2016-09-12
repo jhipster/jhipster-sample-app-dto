@@ -1,6 +1,7 @@
 package io.github.jhipster.sample.web.rest;
 
 import io.github.jhipster.sample.JhipsterDtoSampleApplicationApp;
+
 import io.github.jhipster.sample.domain.Label;
 import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.service.dto.LabelDTO;
@@ -36,7 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LabelResource
  */
 @RunWith(SpringRunner.class)
+
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
+
 public class LabelResourceIntTest {
     private static final String DEFAULT_LABEL = "AAA";
     private static final String UPDATED_LABEL = "BBB";
@@ -79,7 +82,6 @@ public class LabelResourceIntTest {
      */
     public static Label createEntity(EntityManager em) {
         Label label = new Label();
-        label = new Label();
         label.setLabel(DEFAULT_LABEL);
         return label;
     }

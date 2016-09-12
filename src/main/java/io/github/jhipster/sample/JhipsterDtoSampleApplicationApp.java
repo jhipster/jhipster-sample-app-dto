@@ -72,5 +72,4 @@ public class JhipsterDtoSampleApplicationApp {
             env.getProperty("server.port"));
 
     }
-
 }

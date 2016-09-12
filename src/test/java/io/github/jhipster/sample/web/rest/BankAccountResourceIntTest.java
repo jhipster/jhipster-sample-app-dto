@@ -1,6 +1,7 @@
 package io.github.jhipster.sample.web.rest;
 
 import io.github.jhipster.sample.JhipsterDtoSampleApplicationApp;
+
 import io.github.jhipster.sample.domain.BankAccount;
 import io.github.jhipster.sample.repository.BankAccountRepository;
 import io.github.jhipster.sample.service.dto.BankAccountDTO;
@@ -37,7 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see BankAccountResource
  */
 @RunWith(SpringRunner.class)
+
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
+
 public class BankAccountResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAA";
     private static final String UPDATED_NAME = "BBBBB";
@@ -83,7 +86,6 @@ public class BankAccountResourceIntTest {
      */
     public static BankAccount createEntity(EntityManager em) {
         BankAccount bankAccount = new BankAccount();
-        bankAccount = new BankAccount();
         bankAccount.setName(DEFAULT_NAME);
         bankAccount.setBalance(DEFAULT_BALANCE);
         return bankAccount;
