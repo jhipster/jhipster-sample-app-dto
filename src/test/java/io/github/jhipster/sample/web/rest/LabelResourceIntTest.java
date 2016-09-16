@@ -37,10 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LabelResource
  */
 @RunWith(SpringRunner.class)
-
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
-
 public class LabelResourceIntTest {
+
     private static final String DEFAULT_LABEL = "AAA";
     private static final String UPDATED_LABEL = "BBB";
 

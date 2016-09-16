@@ -38,10 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see BankAccountResource
  */
 @RunWith(SpringRunner.class)
-
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
-
 public class BankAccountResourceIntTest {
+
     private static final String DEFAULT_NAME = "AAAAA";
     private static final String UPDATED_NAME = "BBBBB";
 
