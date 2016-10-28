@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +48,7 @@ public class OperationResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new operationDTO, or with status 400 (Bad Request) if the operation has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/operations",
-        method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/operations")
     @Timed
     public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operationDTO);
@@ -75,9 +72,7 @@ public class OperationResource {
      * or with status 500 (Internal Server Error) if the operationDTO couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/operations",
-        method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping("/operations")
     @Timed
     public ResponseEntity<OperationDTO> updateOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to update Operation : {}", operationDTO);
@@ -99,9 +94,7 @@ public class OperationResource {
      * @return the ResponseEntity with status 200 (OK) and the list of operations in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/operations",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/operations")
     @Timed
     public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable)
         throws URISyntaxException {
@@ -117,9 +110,7 @@ public class OperationResource {
      * @param id the id of the operationDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the operationDTO, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/operations/{id}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/operations/{id}")
     @Timed
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
@@ -138,9 +129,7 @@ public class OperationResource {
      * @param id the id of the operationDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/operations/{id}",
-        method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping("/operations/{id}")
     @Timed
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         log.debug("REST request to delete Operation : {}", id);
