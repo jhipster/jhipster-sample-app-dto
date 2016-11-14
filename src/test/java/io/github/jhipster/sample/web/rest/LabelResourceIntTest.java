@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -40,8 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
 public class LabelResourceIntTest {
 
-    private static final String DEFAULT_LABEL = "AAA";
-    private static final String UPDATED_LABEL = "BBB";
+    private static final String DEFAULT_LABEL = "AAAAAAAAAA";
+    private static final String UPDATED_LABEL = "BBBBBBBBBB";
 
     @Inject
     private LabelRepository labelRepository;
@@ -62,7 +61,7 @@ public class LabelResourceIntTest {
 
     private Label label;
 
-    @PostConstruct
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         LabelResource labelResource = new LabelResource();
