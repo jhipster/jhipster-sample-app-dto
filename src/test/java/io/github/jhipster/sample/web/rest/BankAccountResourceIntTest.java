@@ -10,12 +10,11 @@ import io.github.jhipster.sample.service.mapper.BankAccountMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -103,9 +103,9 @@ public class BankAccountResourceIntTest {
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
 
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
-                .andExpect(status().isCreated());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
+            .andExpect(status().isCreated());
 
         // Validate the BankAccount in the database
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
@@ -126,9 +126,9 @@ public class BankAccountResourceIntTest {
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
 
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
-                .andExpect(status().isBadRequest());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
+            .andExpect(status().isBadRequest());
 
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         assertThat(bankAccounts).hasSize(databaseSizeBeforeTest);
@@ -145,9 +145,9 @@ public class BankAccountResourceIntTest {
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
 
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
-                .andExpect(status().isBadRequest());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
+            .andExpect(status().isBadRequest());
 
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         assertThat(bankAccounts).hasSize(databaseSizeBeforeTest);
@@ -161,11 +161,11 @@ public class BankAccountResourceIntTest {
 
         // Get all the bankAccounts
         restBankAccountMockMvc.perform(get("/api/bank-accounts?sort=id,desc"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(bankAccount.getId().intValue())))
-                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-                .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(bankAccount.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class BankAccountResourceIntTest {
     public void getNonExistingBankAccount() throws Exception {
         // Get the bankAccount
         restBankAccountMockMvc.perform(get("/api/bank-accounts/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -205,9 +205,9 @@ public class BankAccountResourceIntTest {
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(updatedBankAccount);
 
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
-                .andExpect(status().isOk());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
+            .andExpect(status().isOk());
 
         // Validate the BankAccount in the database
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
@@ -226,8 +226,8 @@ public class BankAccountResourceIntTest {
 
         // Get the bankAccount
         restBankAccountMockMvc.perform(delete("/api/bank-accounts/{id}", bankAccount.getId())
-                .accept(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
 
         // Validate the database is empty
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();

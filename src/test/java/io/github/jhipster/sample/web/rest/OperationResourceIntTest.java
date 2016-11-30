@@ -10,12 +10,11 @@ import io.github.jhipster.sample.service.mapper.OperationMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,12 +26,13 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static io.github.jhipster.sample.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,7 +47,6 @@ public class OperationResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final String DEFAULT_DATE_STR = DateTimeFormatter.ISO_INSTANT.format(DEFAULT_DATE);
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -113,9 +112,9 @@ public class OperationResourceIntTest {
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
 
         restOperationMockMvc.perform(post("/api/operations")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
-                .andExpect(status().isCreated());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isCreated());
 
         // Validate the Operation in the database
         List<Operation> operations = operationRepository.findAll();
@@ -137,9 +136,9 @@ public class OperationResourceIntTest {
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
 
         restOperationMockMvc.perform(post("/api/operations")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
-                .andExpect(status().isBadRequest());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
 
         List<Operation> operations = operationRepository.findAll();
         assertThat(operations).hasSize(databaseSizeBeforeTest);
@@ -156,9 +155,9 @@ public class OperationResourceIntTest {
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
 
         restOperationMockMvc.perform(post("/api/operations")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
-                .andExpect(status().isBadRequest());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
 
         List<Operation> operations = operationRepository.findAll();
         assertThat(operations).hasSize(databaseSizeBeforeTest);
@@ -172,12 +171,12 @@ public class OperationResourceIntTest {
 
         // Get all the operations
         restOperationMockMvc.perform(get("/api/operations?sort=id,desc"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
-                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE_STR)))
-                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-                .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
     }
 
     @Test
@@ -191,7 +190,7 @@ public class OperationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(operation.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE_STR))
+            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()));
     }
@@ -201,7 +200,7 @@ public class OperationResourceIntTest {
     public void getNonExistingOperation() throws Exception {
         // Get the operation
         restOperationMockMvc.perform(get("/api/operations/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -219,9 +218,9 @@ public class OperationResourceIntTest {
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(updatedOperation);
 
         restOperationMockMvc.perform(put("/api/operations")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
-                .andExpect(status().isOk());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isOk());
 
         // Validate the Operation in the database
         List<Operation> operations = operationRepository.findAll();
@@ -241,8 +240,8 @@ public class OperationResourceIntTest {
 
         // Get the operation
         restOperationMockMvc.perform(delete("/api/operations/{id}", operation.getId())
-                .accept(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Operation> operations = operationRepository.findAll();
