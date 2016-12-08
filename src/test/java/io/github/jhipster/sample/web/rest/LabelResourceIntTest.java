@@ -103,10 +103,31 @@ public class LabelResourceIntTest {
             .andExpect(status().isCreated());
 
         // Validate the Label in the database
-        List<Label> labels = labelRepository.findAll();
-        assertThat(labels).hasSize(databaseSizeBeforeCreate + 1);
-        Label testLabel = labels.get(labels.size() - 1);
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeCreate + 1);
+        Label testLabel = labelList.get(labelList.size() - 1);
         assertThat(testLabel.getLabel()).isEqualTo(DEFAULT_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void createLabelWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = labelRepository.findAll().size();
+
+        // Create the Label with an existing ID
+        Label existingLabel = new Label();
+        existingLabel.setId(1L);
+        LabelDTO existingLabelDTO = labelMapper.labelToLabelDTO(existingLabel);
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restLabelMockMvc.perform(post("/api/labels")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(existingLabelDTO)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Alice in the database
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -124,8 +145,8 @@ public class LabelResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
-        List<Label> labels = labelRepository.findAll();
-        assertThat(labels).hasSize(databaseSizeBeforeTest);
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -134,7 +155,7 @@ public class LabelResourceIntTest {
         // Initialize the database
         labelRepository.saveAndFlush(label);
 
-        // Get all the labels
+        // Get all the labelList
         restLabelMockMvc.perform(get("/api/labels?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -182,10 +203,29 @@ public class LabelResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the Label in the database
-        List<Label> labels = labelRepository.findAll();
-        assertThat(labels).hasSize(databaseSizeBeforeUpdate);
-        Label testLabel = labels.get(labels.size() - 1);
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        Label testLabel = labelList.get(labelList.size() - 1);
         assertThat(testLabel.getLabel()).isEqualTo(UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingLabel() throws Exception {
+        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+
+        // Create the Label
+        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+
+        // If the entity doesn't have an ID, it will be created instead of just being updated
+        restLabelMockMvc.perform(put("/api/labels")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the Label in the database
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test
@@ -201,7 +241,7 @@ public class LabelResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<Label> labels = labelRepository.findAll();
-        assertThat(labels).hasSize(databaseSizeBeforeDelete - 1);
+        List<Label> labelList = labelRepository.findAll();
+        assertThat(labelList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

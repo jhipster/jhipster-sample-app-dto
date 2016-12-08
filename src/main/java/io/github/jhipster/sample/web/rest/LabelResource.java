@@ -7,6 +7,7 @@ import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.service.dto.LabelDTO;
 import io.github.jhipster.sample.service.mapper.LabelMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
