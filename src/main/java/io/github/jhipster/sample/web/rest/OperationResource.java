@@ -8,8 +8,8 @@ import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.web.rest.util.PaginationUtil;
 import io.github.jhipster.sample.service.dto.OperationDTO;
 import io.github.jhipster.sample.service.mapper.OperationMapper;
-
 import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,12 +35,17 @@ import java.util.stream.Collectors;
 public class OperationResource {
 
     private final Logger log = LoggerFactory.getLogger(OperationResource.class);
-        
-    @Inject
-    private OperationRepository operationRepository;
 
-    @Inject
-    private OperationMapper operationMapper;
+    private static final String ENTITY_NAME = "operation";
+        
+    private final OperationRepository operationRepository;
+
+    private final OperationMapper operationMapper;
+
+    public OperationResource(OperationRepository operationRepository, OperationMapper operationMapper) {
+        this.operationRepository = operationRepository;
+        this.operationMapper = operationMapper;
+    }
 
     /**
      * POST  /operations : Create a new operation.
@@ -55,13 +59,13 @@ public class OperationResource {
     public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operationDTO);
         if (operationDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("operation", "idexists", "A new operation cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new operation cannot already have an ID")).body(null);
         }
         Operation operation = operationMapper.operationDTOToOperation(operationDTO);
         operation = operationRepository.save(operation);
         OperationDTO result = operationMapper.operationToOperationDTO(operation);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("operation", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -85,7 +89,7 @@ public class OperationResource {
         operation = operationRepository.save(operation);
         OperationDTO result = operationMapper.operationToOperationDTO(operation);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("operation", operationDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, operationDTO.getId().toString()))
             .body(result);
     }
 
@@ -118,11 +122,7 @@ public class OperationResource {
         log.debug("REST request to get Operation : {}", id);
         Operation operation = operationRepository.findOneWithEagerRelationships(id);
         OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
-        return Optional.ofNullable(operationDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationDTO));
     }
 
     /**
@@ -136,7 +136,7 @@ public class OperationResource {
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         log.debug("REST request to delete Operation : {}", id);
         operationRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("operation", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
 }

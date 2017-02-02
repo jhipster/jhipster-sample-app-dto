@@ -1,11 +1,11 @@
 package io.github.jhipster.sample.service.dto;
 
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
 
 /**
  * A DTO for the Label entity.
@@ -17,7 +17,6 @@ public class LabelDTO implements Serializable {
     @NotNull
     @Size(min = 3)
     private String label;
-
 
     public Long getId() {
         return id;
@@ -45,7 +44,7 @@ public class LabelDTO implements Serializable {
 
         LabelDTO labelDTO = (LabelDTO) o;
 
-        if ( ! Objects.equals(id, labelDTO.id)) return false;
+        if ( ! Objects.equals(id, labelDTO.id)) { return false; }
 
         return true;
     }

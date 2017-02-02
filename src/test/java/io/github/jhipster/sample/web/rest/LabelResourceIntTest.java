@@ -11,17 +11,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -42,19 +41,19 @@ public class LabelResourceIntTest {
     private static final String DEFAULT_LABEL = "AAAAAAAAAA";
     private static final String UPDATED_LABEL = "BBBBBBBBBB";
 
-    @Inject
+    @Autowired
     private LabelRepository labelRepository;
 
-    @Inject
+    @Autowired
     private LabelMapper labelMapper;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
     private EntityManager em;
 
     private MockMvc restLabelMockMvc;
@@ -64,9 +63,7 @@ public class LabelResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LabelResource labelResource = new LabelResource();
-        ReflectionTestUtils.setField(labelResource, "labelRepository", labelRepository);
-        ReflectionTestUtils.setField(labelResource, "labelMapper", labelMapper);
+            LabelResource labelResource = new LabelResource(labelRepository, labelMapper);
         this.restLabelMockMvc = MockMvcBuilders.standaloneSetup(labelResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -243,5 +240,10 @@ public class LabelResourceIntTest {
         // Validate the database is empty
         List<Label> labelList = labelRepository.findAll();
         assertThat(labelList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Label.class);
     }
 }

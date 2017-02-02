@@ -1,12 +1,12 @@
 package io.github.jhipster.sample.service.dto;
 
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
 
 /**
  * A DTO for the BankAccount entity.
@@ -21,9 +21,7 @@ public class BankAccountDTO implements Serializable {
     @NotNull
     private BigDecimal balance;
 
-
     private Long userId;
-    
 
     private String userLogin;
 
@@ -57,7 +55,6 @@ public class BankAccountDTO implements Serializable {
         this.userId = userId;
     }
 
-
     public String getUserLogin() {
         return userLogin;
     }
@@ -77,7 +74,7 @@ public class BankAccountDTO implements Serializable {
 
         BankAccountDTO bankAccountDTO = (BankAccountDTO) o;
 
-        if ( ! Objects.equals(id, bankAccountDTO.id)) return false;
+        if ( ! Objects.equals(id, bankAccountDTO.id)) { return false; }
 
         return true;
     }

@@ -1,5 +1,6 @@
 package io.github.jhipster.sample.service.dto;
 
+
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -7,7 +8,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
 
 /**
  * A DTO for the Operation entity.
@@ -24,9 +24,7 @@ public class OperationDTO implements Serializable {
     @NotNull
     private BigDecimal amount;
 
-
     private Long bankAccountId;
-    
 
     private String bankAccountName;
 
@@ -69,7 +67,6 @@ public class OperationDTO implements Serializable {
         this.bankAccountId = bankAccountId;
     }
 
-
     public String getBankAccountName() {
         return bankAccountName;
     }
@@ -97,7 +94,7 @@ public class OperationDTO implements Serializable {
 
         OperationDTO operationDTO = (OperationDTO) o;
 
-        if ( ! Objects.equals(id, operationDTO.id)) return false;
+        if ( ! Objects.equals(id, operationDTO.id)) { return false; }
 
         return true;
     }

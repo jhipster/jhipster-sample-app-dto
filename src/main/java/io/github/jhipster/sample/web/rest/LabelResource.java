@@ -7,15 +7,12 @@ import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.service.dto.LabelDTO;
 import io.github.jhipster.sample.service.mapper.LabelMapper;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -32,12 +29,17 @@ import java.util.stream.Collectors;
 public class LabelResource {
 
     private final Logger log = LoggerFactory.getLogger(LabelResource.class);
-        
-    @Inject
-    private LabelRepository labelRepository;
 
-    @Inject
-    private LabelMapper labelMapper;
+    private static final String ENTITY_NAME = "label";
+        
+    private final LabelRepository labelRepository;
+
+    private final LabelMapper labelMapper;
+
+    public LabelResource(LabelRepository labelRepository, LabelMapper labelMapper) {
+        this.labelRepository = labelRepository;
+        this.labelMapper = labelMapper;
+    }
 
     /**
      * POST  /labels : Create a new label.
@@ -51,13 +53,13 @@ public class LabelResource {
     public ResponseEntity<LabelDTO> createLabel(@Valid @RequestBody LabelDTO labelDTO) throws URISyntaxException {
         log.debug("REST request to save Label : {}", labelDTO);
         if (labelDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("label", "idexists", "A new label cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new label cannot already have an ID")).body(null);
         }
         Label label = labelMapper.labelDTOToLabel(labelDTO);
         label = labelRepository.save(label);
         LabelDTO result = labelMapper.labelToLabelDTO(label);
         return ResponseEntity.created(new URI("/api/labels/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("label", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -81,7 +83,7 @@ public class LabelResource {
         label = labelRepository.save(label);
         LabelDTO result = labelMapper.labelToLabelDTO(label);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("label", labelDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, labelDTO.getId().toString()))
             .body(result);
     }
 
@@ -110,11 +112,7 @@ public class LabelResource {
         log.debug("REST request to get Label : {}", id);
         Label label = labelRepository.findOne(id);
         LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
-        return Optional.ofNullable(labelDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(labelDTO));
     }
 
     /**
@@ -128,7 +126,7 @@ public class LabelResource {
     public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);
         labelRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("label", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
 }

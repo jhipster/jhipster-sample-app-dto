@@ -7,15 +7,12 @@ import io.github.jhipster.sample.repository.BankAccountRepository;
 import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.service.dto.BankAccountDTO;
 import io.github.jhipster.sample.service.mapper.BankAccountMapper;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -32,12 +29,17 @@ import java.util.stream.Collectors;
 public class BankAccountResource {
 
     private final Logger log = LoggerFactory.getLogger(BankAccountResource.class);
-        
-    @Inject
-    private BankAccountRepository bankAccountRepository;
 
-    @Inject
-    private BankAccountMapper bankAccountMapper;
+    private static final String ENTITY_NAME = "bankAccount";
+        
+    private final BankAccountRepository bankAccountRepository;
+
+    private final BankAccountMapper bankAccountMapper;
+
+    public BankAccountResource(BankAccountRepository bankAccountRepository, BankAccountMapper bankAccountMapper) {
+        this.bankAccountRepository = bankAccountRepository;
+        this.bankAccountMapper = bankAccountMapper;
+    }
 
     /**
      * POST  /bank-accounts : Create a new bankAccount.
@@ -51,13 +53,13 @@ public class BankAccountResource {
     public ResponseEntity<BankAccountDTO> createBankAccount(@Valid @RequestBody BankAccountDTO bankAccountDTO) throws URISyntaxException {
         log.debug("REST request to save BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("bankAccount", "idexists", "A new bankAccount cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new bankAccount cannot already have an ID")).body(null);
         }
         BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
         BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
         return ResponseEntity.created(new URI("/api/bank-accounts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("bankAccount", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -81,7 +83,7 @@ public class BankAccountResource {
         bankAccount = bankAccountRepository.save(bankAccount);
         BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("bankAccount", bankAccountDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, bankAccountDTO.getId().toString()))
             .body(result);
     }
 
@@ -110,11 +112,7 @@ public class BankAccountResource {
         log.debug("REST request to get BankAccount : {}", id);
         BankAccount bankAccount = bankAccountRepository.findOne(id);
         BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
-        return Optional.ofNullable(bankAccountDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bankAccountDTO));
     }
 
     /**
@@ -128,7 +126,7 @@ public class BankAccountResource {
     public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
         bankAccountRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("bankAccount", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
 }
