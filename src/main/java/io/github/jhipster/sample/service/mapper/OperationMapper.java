@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Mapper for the entity Operation and its DTO OperationDTO.
  */
-@Mapper(componentModel = "spring", uses = {LabelMapper.class, })
+@Mapper(componentModel = "spring", uses = {BankAccountMapper.class, LabelMapper.class, })
 public interface OperationMapper {
 
     @Mapping(source = "bankAccount.id", target = "bankAccountId")
@@ -22,22 +22,22 @@ public interface OperationMapper {
     Operation operationDTOToOperation(OperationDTO operationDTO);
 
     List<Operation> operationDTOsToOperations(List<OperationDTO> operationDTOs);
-
-    default BankAccount bankAccountFromId(Long id) {
+    /**
+     * generating the fromId for all mappers if the databaseType is sql, as the class has relationship to it might need it, instead of
+     * creating a new attribute to know if the entity has any relationship from some other entity
+     *
+     * @param id id of the entity
+     * @return the entity instance
+     */
+     
+    default Operation operationFromId(Long id) {
         if (id == null) {
             return null;
         }
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setId(id);
-        return bankAccount;
+        Operation operation = new Operation();
+        operation.setId(id);
+        return operation;
     }
+    
 
-    default Label labelFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Label label = new Label();
-        label.setId(id);
-        return label;
-    }
 }
