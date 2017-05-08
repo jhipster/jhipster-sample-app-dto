@@ -97,7 +97,7 @@ public class LabelResourceIntTest {
         int databaseSizeBeforeCreate = labelRepository.findAll().size();
 
         // Create the Label
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        LabelDTO labelDTO = labelMapper.toDto(label);
         restLabelMockMvc.perform(post("/api/labels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
@@ -117,7 +117,7 @@ public class LabelResourceIntTest {
 
         // Create the Label with an existing ID
         label.setId(1L);
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        LabelDTO labelDTO = labelMapper.toDto(label);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLabelMockMvc.perform(post("/api/labels")
@@ -138,7 +138,7 @@ public class LabelResourceIntTest {
         label.setLabel(null);
 
         // Create the Label, which fails.
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        LabelDTO labelDTO = labelMapper.toDto(label);
 
         restLabelMockMvc.perform(post("/api/labels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -195,7 +195,7 @@ public class LabelResourceIntTest {
         // Update the label
         Label updatedLabel = labelRepository.findOne(label.getId());
         updatedLabel.setLabel(UPDATED_LABEL);
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(updatedLabel);
+        LabelDTO labelDTO = labelMapper.toDto(updatedLabel);
 
         restLabelMockMvc.perform(put("/api/labels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -215,7 +215,7 @@ public class LabelResourceIntTest {
         int databaseSizeBeforeUpdate = labelRepository.findAll().size();
 
         // Create the Label
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        LabelDTO labelDTO = labelMapper.toDto(label);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restLabelMockMvc.perform(put("/api/labels")
@@ -249,5 +249,37 @@ public class LabelResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Label.class);
+        Label label1 = new Label();
+        label1.setId(1L);
+        Label label2 = new Label();
+        label2.setId(label1.getId());
+        assertThat(label1).isEqualTo(label2);
+        label2.setId(2L);
+        assertThat(label1).isNotEqualTo(label2);
+        label1.setId(null);
+        assertThat(label1).isNotEqualTo(label2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(LabelDTO.class);
+        LabelDTO labelDTO1 = new LabelDTO();
+        labelDTO1.setId(1L);
+        LabelDTO labelDTO2 = new LabelDTO();
+        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
+        labelDTO2.setId(labelDTO1.getId());
+        assertThat(labelDTO1).isEqualTo(labelDTO2);
+        labelDTO2.setId(2L);
+        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
+        labelDTO1.setId(null);
+        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(labelMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(labelMapper.fromId(null)).isNull();
     }
 }

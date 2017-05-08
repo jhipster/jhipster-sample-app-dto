@@ -55,9 +55,9 @@ public class LabelResource {
         if (labelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new label cannot already have an ID")).body(null);
         }
-        Label label = labelMapper.labelDTOToLabel(labelDTO);
+        Label label = labelMapper.toEntity(labelDTO);
         label = labelRepository.save(label);
-        LabelDTO result = labelMapper.labelToLabelDTO(label);
+        LabelDTO result = labelMapper.toDto(label);
         return ResponseEntity.created(new URI("/api/labels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -79,9 +79,9 @@ public class LabelResource {
         if (labelDTO.getId() == null) {
             return createLabel(labelDTO);
         }
-        Label label = labelMapper.labelDTOToLabel(labelDTO);
+        Label label = labelMapper.toEntity(labelDTO);
         label = labelRepository.save(label);
-        LabelDTO result = labelMapper.labelToLabelDTO(label);
+        LabelDTO result = labelMapper.toDto(label);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, labelDTO.getId().toString()))
             .body(result);
@@ -97,7 +97,7 @@ public class LabelResource {
     public List<LabelDTO> getAllLabels() {
         log.debug("REST request to get all Labels");
         List<Label> labels = labelRepository.findAll();
-        return labelMapper.labelsToLabelDTOs(labels);
+        return labelMapper.toDto(labels);
     }
 
     /**
@@ -111,7 +111,7 @@ public class LabelResource {
     public ResponseEntity<LabelDTO> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
         Label label = labelRepository.findOne(id);
-        LabelDTO labelDTO = labelMapper.labelToLabelDTO(label);
+        LabelDTO labelDTO = labelMapper.toDto(label);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(labelDTO));
     }
 

@@ -32,6 +32,7 @@ public class BankAccountDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -39,6 +40,7 @@ public class BankAccountDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public BigDecimal getBalance() {
         return balance;
     }
@@ -73,23 +75,23 @@ public class BankAccountDTO implements Serializable {
         }
 
         BankAccountDTO bankAccountDTO = (BankAccountDTO) o;
-
-        if ( ! Objects.equals(id, bankAccountDTO.id)) { return false; }
-
-        return true;
+        if(bankAccountDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), bankAccountDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "BankAccountDTO{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", balance='" + balance + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", balance='" + getBalance() + "'" +
+            "}";
     }
 }

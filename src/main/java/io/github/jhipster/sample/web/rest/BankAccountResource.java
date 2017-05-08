@@ -55,9 +55,9 @@ public class BankAccountResource {
         if (bankAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new bankAccount cannot already have an ID")).body(null);
         }
-        BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
+        BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
-        BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO result = bankAccountMapper.toDto(bankAccount);
         return ResponseEntity.created(new URI("/api/bank-accounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -79,9 +79,9 @@ public class BankAccountResource {
         if (bankAccountDTO.getId() == null) {
             return createBankAccount(bankAccountDTO);
         }
-        BankAccount bankAccount = bankAccountMapper.bankAccountDTOToBankAccount(bankAccountDTO);
+        BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
-        BankAccountDTO result = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO result = bankAccountMapper.toDto(bankAccount);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, bankAccountDTO.getId().toString()))
             .body(result);
@@ -97,7 +97,7 @@ public class BankAccountResource {
     public List<BankAccountDTO> getAllBankAccounts() {
         log.debug("REST request to get all BankAccounts");
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
-        return bankAccountMapper.bankAccountsToBankAccountDTOs(bankAccounts);
+        return bankAccountMapper.toDto(bankAccounts);
     }
 
     /**
@@ -111,7 +111,7 @@ public class BankAccountResource {
     public ResponseEntity<BankAccountDTO> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
         BankAccount bankAccount = bankAccountRepository.findOne(id);
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bankAccountDTO));
     }
 

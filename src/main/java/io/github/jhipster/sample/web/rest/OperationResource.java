@@ -61,9 +61,9 @@ public class OperationResource {
         if (operationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new operation cannot already have an ID")).body(null);
         }
-        Operation operation = operationMapper.operationDTOToOperation(operationDTO);
+        Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
-        OperationDTO result = operationMapper.operationToOperationDTO(operation);
+        OperationDTO result = operationMapper.toDto(operation);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -85,9 +85,9 @@ public class OperationResource {
         if (operationDTO.getId() == null) {
             return createOperation(operationDTO);
         }
-        Operation operation = operationMapper.operationDTOToOperation(operationDTO);
+        Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
-        OperationDTO result = operationMapper.operationToOperationDTO(operation);
+        OperationDTO result = operationMapper.toDto(operation);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, operationDTO.getId().toString()))
             .body(result);
@@ -105,7 +105,7 @@ public class OperationResource {
         log.debug("REST request to get a page of Operations");
         Page<Operation> page = operationRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
-        return new ResponseEntity<>(operationMapper.operationsToOperationDTOs(page.getContent()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(operationMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
     /**
@@ -119,7 +119,7 @@ public class OperationResource {
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
         Operation operation = operationRepository.findOneWithEagerRelationships(id);
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationDTO));
     }
 

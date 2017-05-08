@@ -25,6 +25,7 @@ public class LabelDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getLabel() {
         return label;
     }
@@ -43,22 +44,22 @@ public class LabelDTO implements Serializable {
         }
 
         LabelDTO labelDTO = (LabelDTO) o;
-
-        if ( ! Objects.equals(id, labelDTO.id)) { return false; }
-
-        return true;
+        if(labelDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), labelDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "LabelDTO{" +
-            "id=" + id +
-            ", label='" + label + "'" +
-            '}';
+            "id=" + getId() +
+            ", label='" + getLabel() + "'" +
+            "}";
     }
 }

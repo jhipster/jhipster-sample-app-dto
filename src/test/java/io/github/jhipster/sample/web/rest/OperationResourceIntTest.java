@@ -23,14 +23,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static io.github.jhipster.sample.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,8 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
 public class OperationResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -111,7 +108,7 @@ public class OperationResourceIntTest {
         int databaseSizeBeforeCreate = operationRepository.findAll().size();
 
         // Create the Operation
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
         restOperationMockMvc.perform(post("/api/operations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
@@ -133,7 +130,7 @@ public class OperationResourceIntTest {
 
         // Create the Operation with an existing ID
         operation.setId(1L);
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOperationMockMvc.perform(post("/api/operations")
@@ -154,7 +151,7 @@ public class OperationResourceIntTest {
         operation.setDate(null);
 
         // Create the Operation, which fails.
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
 
         restOperationMockMvc.perform(post("/api/operations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -173,7 +170,7 @@ public class OperationResourceIntTest {
         operation.setAmount(null);
 
         // Create the Operation, which fails.
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
 
         restOperationMockMvc.perform(post("/api/operations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -195,7 +192,7 @@ public class OperationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
     }
@@ -211,7 +208,7 @@ public class OperationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(operation.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()));
     }
@@ -236,7 +233,7 @@ public class OperationResourceIntTest {
         updatedOperation.setDate(UPDATED_DATE);
         updatedOperation.setDescription(UPDATED_DESCRIPTION);
         updatedOperation.setAmount(UPDATED_AMOUNT);
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(updatedOperation);
+        OperationDTO operationDTO = operationMapper.toDto(updatedOperation);
 
         restOperationMockMvc.perform(put("/api/operations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -258,7 +255,7 @@ public class OperationResourceIntTest {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
 
         // Create the Operation
-        OperationDTO operationDTO = operationMapper.operationToOperationDTO(operation);
+        OperationDTO operationDTO = operationMapper.toDto(operation);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restOperationMockMvc.perform(put("/api/operations")
@@ -292,5 +289,37 @@ public class OperationResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Operation.class);
+        Operation operation1 = new Operation();
+        operation1.setId(1L);
+        Operation operation2 = new Operation();
+        operation2.setId(operation1.getId());
+        assertThat(operation1).isEqualTo(operation2);
+        operation2.setId(2L);
+        assertThat(operation1).isNotEqualTo(operation2);
+        operation1.setId(null);
+        assertThat(operation1).isNotEqualTo(operation2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(OperationDTO.class);
+        OperationDTO operationDTO1 = new OperationDTO();
+        operationDTO1.setId(1L);
+        OperationDTO operationDTO2 = new OperationDTO();
+        assertThat(operationDTO1).isNotEqualTo(operationDTO2);
+        operationDTO2.setId(operationDTO1.getId());
+        assertThat(operationDTO1).isEqualTo(operationDTO2);
+        operationDTO2.setId(2L);
+        assertThat(operationDTO1).isNotEqualTo(operationDTO2);
+        operationDTO1.setId(null);
+        assertThat(operationDTO1).isNotEqualTo(operationDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(operationMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(operationMapper.fromId(null)).isNull();
     }
 }

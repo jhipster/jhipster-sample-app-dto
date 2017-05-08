@@ -102,7 +102,7 @@ public class BankAccountResourceIntTest {
         int databaseSizeBeforeCreate = bankAccountRepository.findAll().size();
 
         // Create the BankAccount
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
@@ -123,7 +123,7 @@ public class BankAccountResourceIntTest {
 
         // Create the BankAccount with an existing ID
         bankAccount.setId(1L);
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
@@ -144,7 +144,7 @@ public class BankAccountResourceIntTest {
         bankAccount.setName(null);
 
         // Create the BankAccount, which fails.
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -163,7 +163,7 @@ public class BankAccountResourceIntTest {
         bankAccount.setBalance(null);
 
         // Create the BankAccount, which fails.
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -223,7 +223,7 @@ public class BankAccountResourceIntTest {
         BankAccount updatedBankAccount = bankAccountRepository.findOne(bankAccount.getId());
         updatedBankAccount.setName(UPDATED_NAME);
         updatedBankAccount.setBalance(UPDATED_BALANCE);
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(updatedBankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(updatedBankAccount);
 
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,7 +244,7 @@ public class BankAccountResourceIntTest {
         int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
 
         // Create the BankAccount
-        BankAccountDTO bankAccountDTO = bankAccountMapper.bankAccountToBankAccountDTO(bankAccount);
+        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
@@ -278,5 +278,37 @@ public class BankAccountResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(BankAccount.class);
+        BankAccount bankAccount1 = new BankAccount();
+        bankAccount1.setId(1L);
+        BankAccount bankAccount2 = new BankAccount();
+        bankAccount2.setId(bankAccount1.getId());
+        assertThat(bankAccount1).isEqualTo(bankAccount2);
+        bankAccount2.setId(2L);
+        assertThat(bankAccount1).isNotEqualTo(bankAccount2);
+        bankAccount1.setId(null);
+        assertThat(bankAccount1).isNotEqualTo(bankAccount2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(BankAccountDTO.class);
+        BankAccountDTO bankAccountDTO1 = new BankAccountDTO();
+        bankAccountDTO1.setId(1L);
+        BankAccountDTO bankAccountDTO2 = new BankAccountDTO();
+        assertThat(bankAccountDTO1).isNotEqualTo(bankAccountDTO2);
+        bankAccountDTO2.setId(bankAccountDTO1.getId());
+        assertThat(bankAccountDTO1).isEqualTo(bankAccountDTO2);
+        bankAccountDTO2.setId(2L);
+        assertThat(bankAccountDTO1).isNotEqualTo(bankAccountDTO2);
+        bankAccountDTO1.setId(null);
+        assertThat(bankAccountDTO1).isNotEqualTo(bankAccountDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(bankAccountMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(bankAccountMapper.fromId(null)).isNull();
     }
 }

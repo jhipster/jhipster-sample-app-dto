@@ -1,7 +1,7 @@
 package io.github.jhipster.sample.service.dto;
 
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class OperationDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private ZonedDateTime date;
+    private Instant date;
 
     private String description;
 
@@ -37,13 +37,15 @@ public class OperationDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    public ZonedDateTime getDate() {
+
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
+
     public String getDescription() {
         return description;
     }
@@ -51,6 +53,7 @@ public class OperationDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -93,24 +96,24 @@ public class OperationDTO implements Serializable {
         }
 
         OperationDTO operationDTO = (OperationDTO) o;
-
-        if ( ! Objects.equals(id, operationDTO.id)) { return false; }
-
-        return true;
+        if(operationDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), operationDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "OperationDTO{" +
-            "id=" + id +
-            ", date='" + date + "'" +
-            ", description='" + description + "'" +
-            ", amount='" + amount + "'" +
-            '}';
+            "id=" + getId() +
+            ", date='" + getDate() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", amount='" + getAmount() + "'" +
+            "}";
     }
 }

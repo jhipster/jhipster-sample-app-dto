@@ -4,24 +4,17 @@ import io.github.jhipster.sample.domain.*;
 import io.github.jhipster.sample.service.dto.OperationDTO;
 
 import org.mapstruct.*;
-import java.util.List;
 
 /**
  * Mapper for the entity Operation and its DTO OperationDTO.
  */
 @Mapper(componentModel = "spring", uses = {BankAccountMapper.class, LabelMapper.class, })
-public interface OperationMapper {
-
+public interface OperationMapper extends EntityMapper <OperationDTO, Operation> {
     @Mapping(source = "bankAccount.id", target = "bankAccountId")
     @Mapping(source = "bankAccount.name", target = "bankAccountName")
-    OperationDTO operationToOperationDTO(Operation operation);
-
-    List<OperationDTO> operationsToOperationDTOs(List<Operation> operations);
-
+    OperationDTO toDto(Operation operation); 
     @Mapping(source = "bankAccountId", target = "bankAccount")
-    Operation operationDTOToOperation(OperationDTO operationDTO);
-
-    List<Operation> operationDTOsToOperations(List<OperationDTO> operationDTOs);
+    Operation toEntity(OperationDTO operationDTO); 
     /**
      * generating the fromId for all mappers if the databaseType is sql, as the class has relationship to it might need it, instead of
      * creating a new attribute to know if the entity has any relationship from some other entity
@@ -30,7 +23,7 @@ public interface OperationMapper {
      * @return the entity instance
      */
      
-    default Operation operationFromId(Long id) {
+    default Operation fromId(Long id) {
         if (id == null) {
             return null;
         }
@@ -38,6 +31,4 @@ public interface OperationMapper {
         operation.setId(id);
         return operation;
     }
-    
-
 }

@@ -4,25 +4,18 @@ import io.github.jhipster.sample.domain.*;
 import io.github.jhipster.sample.service.dto.BankAccountDTO;
 
 import org.mapstruct.*;
-import java.util.List;
 
 /**
  * Mapper for the entity BankAccount and its DTO BankAccountDTO.
  */
 @Mapper(componentModel = "spring", uses = {UserMapper.class, })
-public interface BankAccountMapper {
-
+public interface BankAccountMapper extends EntityMapper <BankAccountDTO, BankAccount> {
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "user.login", target = "userLogin")
-    BankAccountDTO bankAccountToBankAccountDTO(BankAccount bankAccount);
-
-    List<BankAccountDTO> bankAccountsToBankAccountDTOs(List<BankAccount> bankAccounts);
-
+    BankAccountDTO toDto(BankAccount bankAccount); 
     @Mapping(source = "userId", target = "user")
     @Mapping(target = "operations", ignore = true)
-    BankAccount bankAccountDTOToBankAccount(BankAccountDTO bankAccountDTO);
-
-    List<BankAccount> bankAccountDTOsToBankAccounts(List<BankAccountDTO> bankAccountDTOs);
+    BankAccount toEntity(BankAccountDTO bankAccountDTO); 
     /**
      * generating the fromId for all mappers if the databaseType is sql, as the class has relationship to it might need it, instead of
      * creating a new attribute to know if the entity has any relationship from some other entity
@@ -31,7 +24,7 @@ public interface BankAccountMapper {
      * @return the entity instance
      */
      
-    default BankAccount bankAccountFromId(Long id) {
+    default BankAccount fromId(Long id) {
         if (id == null) {
             return null;
         }
@@ -39,6 +32,4 @@ public interface BankAccountMapper {
         bankAccount.setId(id);
         return bankAccount;
     }
-    
-
 }
