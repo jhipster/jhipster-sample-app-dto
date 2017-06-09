@@ -36,7 +36,7 @@ public class OperationResource {
     private final Logger log = LoggerFactory.getLogger(OperationResource.class);
 
     private static final String ENTITY_NAME = "operation";
-        
+
     private final OperationRepository operationRepository;
 
     private final OperationMapper operationMapper;
@@ -74,7 +74,7 @@ public class OperationResource {
      * @param operationDTO the operationDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated operationDTO,
      * or with status 400 (Bad Request) if the operationDTO is not valid,
-     * or with status 500 (Internal Server Error) if the operationDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the operationDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/operations")
@@ -135,5 +135,4 @@ public class OperationResource {
         operationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }

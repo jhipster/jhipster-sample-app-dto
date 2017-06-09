@@ -30,7 +30,7 @@ public class BankAccountResource {
     private final Logger log = LoggerFactory.getLogger(BankAccountResource.class);
 
     private static final String ENTITY_NAME = "bankAccount";
-        
+
     private final BankAccountRepository bankAccountRepository;
 
     private final BankAccountMapper bankAccountMapper;
@@ -68,7 +68,7 @@ public class BankAccountResource {
      * @param bankAccountDTO the bankAccountDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated bankAccountDTO,
      * or with status 400 (Bad Request) if the bankAccountDTO is not valid,
-     * or with status 500 (Internal Server Error) if the bankAccountDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the bankAccountDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/bank-accounts")
@@ -127,5 +127,4 @@ public class BankAccountResource {
         bankAccountRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }

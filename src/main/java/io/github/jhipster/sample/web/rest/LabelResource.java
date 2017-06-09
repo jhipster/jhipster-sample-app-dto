@@ -30,7 +30,7 @@ public class LabelResource {
     private final Logger log = LoggerFactory.getLogger(LabelResource.class);
 
     private static final String ENTITY_NAME = "label";
-        
+
     private final LabelRepository labelRepository;
 
     private final LabelMapper labelMapper;
@@ -68,7 +68,7 @@ public class LabelResource {
      * @param labelDTO the labelDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated labelDTO,
      * or with status 400 (Bad Request) if the labelDTO is not valid,
-     * or with status 500 (Internal Server Error) if the labelDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the labelDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/labels")
@@ -127,5 +127,4 @@ public class LabelResource {
         labelRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }
