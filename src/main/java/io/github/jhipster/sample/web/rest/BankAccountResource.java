@@ -34,7 +34,6 @@ public class BankAccountResource {
     private final BankAccountRepository bankAccountRepository;
 
     private final BankAccountMapper bankAccountMapper;
-
     public BankAccountResource(BankAccountRepository bankAccountRepository, BankAccountMapper bankAccountMapper) {
         this.bankAccountRepository = bankAccountRepository;
         this.bankAccountMapper = bankAccountMapper;
@@ -97,7 +96,7 @@ public class BankAccountResource {
         log.debug("REST request to get all BankAccounts");
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         return bankAccountMapper.toDto(bankAccounts);
-    }
+        }
 
     /**
      * GET  /bank-accounts/:id : get the "id" bankAccount.

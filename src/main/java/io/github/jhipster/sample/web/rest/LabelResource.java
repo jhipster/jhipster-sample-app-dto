@@ -34,7 +34,6 @@ public class LabelResource {
     private final LabelRepository labelRepository;
 
     private final LabelMapper labelMapper;
-
     public LabelResource(LabelRepository labelRepository, LabelMapper labelMapper) {
         this.labelRepository = labelRepository;
         this.labelMapper = labelMapper;
@@ -97,7 +96,7 @@ public class LabelResource {
         log.debug("REST request to get all Labels");
         List<Label> labels = labelRepository.findAll();
         return labelMapper.toDto(labels);
-    }
+        }
 
     /**
      * GET  /labels/:id : get the "id" label.

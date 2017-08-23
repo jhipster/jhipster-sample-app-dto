@@ -67,7 +67,7 @@ public class LabelResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LabelResource labelResource = new LabelResource(labelRepository, labelMapper);
+        final LabelResource labelResource = new LabelResource(labelRepository, labelMapper);
         this.restLabelMockMvc = MockMvcBuilders.standaloneSetup(labelResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
