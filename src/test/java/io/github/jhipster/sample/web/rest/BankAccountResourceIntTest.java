@@ -131,7 +131,7 @@ public class BankAccountResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the BankAccount in the database
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
         assertThat(bankAccountList).hasSize(databaseSizeBeforeCreate);
     }
