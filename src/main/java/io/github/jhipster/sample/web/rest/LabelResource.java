@@ -34,6 +34,7 @@ public class LabelResource {
     private final LabelRepository labelRepository;
 
     private final LabelMapper labelMapper;
+
     public LabelResource(LabelRepository labelRepository, LabelMapper labelMapper) {
         this.labelRepository = labelRepository;
         this.labelMapper = labelMapper;

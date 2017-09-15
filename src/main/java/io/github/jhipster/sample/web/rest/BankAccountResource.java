@@ -34,6 +34,7 @@ public class BankAccountResource {
     private final BankAccountRepository bankAccountRepository;
 
     private final BankAccountMapper bankAccountMapper;
+
     public BankAccountResource(BankAccountRepository bankAccountRepository, BankAccountMapper bankAccountMapper) {
         this.bankAccountRepository = bankAccountRepository;
         this.bankAccountMapper = bankAccountMapper;

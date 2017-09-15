@@ -40,6 +40,7 @@ public class OperationResource {
     private final OperationRepository operationRepository;
 
     private final OperationMapper operationMapper;
+
     public OperationResource(OperationRepository operationRepository, OperationMapper operationMapper) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
