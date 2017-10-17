@@ -9,10 +9,13 @@ import org.mapstruct.*;
  * Mapper for the entity Label and its DTO LabelDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface LabelMapper extends EntityMapper <LabelDTO, Label> {
+public interface LabelMapper extends EntityMapper<LabelDTO, Label> {
+
     
+
     @Mapping(target = "operations", ignore = true)
-    Label toEntity(LabelDTO labelDTO); 
+    Label toEntity(LabelDTO labelDTO);
+
     default Label fromId(Long id) {
         if (id == null) {
             return null;
