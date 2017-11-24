@@ -113,7 +113,7 @@ public class OperationDTO implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", description='" + getDescription() + "'" +
-            ", amount='" + getAmount() + "'" +
+            ", amount=" + getAmount() +
             "}";
     }
 }

@@ -91,7 +91,7 @@ public class BankAccountDTO implements Serializable {
         return "BankAccountDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", balance='" + getBalance() + "'" +
+            ", balance=" + getBalance() +
             "}";
     }
 }

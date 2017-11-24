@@ -9,7 +9,6 @@ import io.github.jhipster.sample.web.rest.util.HeaderUtil;
 import io.github.jhipster.sample.web.rest.util.PaginationUtil;
 import io.github.jhipster.sample.service.dto.OperationDTO;
 import io.github.jhipster.sample.service.mapper.OperationMapper;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public class OperationResource {
      */
     @GetMapping("/operations")
     @Timed
-    public ResponseEntity<List<OperationDTO>> getAllOperations(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OperationDTO>> getAllOperations(Pageable pageable) {
         log.debug("REST request to get a page of Operations");
         Page<Operation> page = operationRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/operations");
