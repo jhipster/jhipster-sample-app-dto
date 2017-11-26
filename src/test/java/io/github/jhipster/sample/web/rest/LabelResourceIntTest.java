@@ -196,6 +196,8 @@ public class LabelResourceIntTest {
 
         // Update the label
         Label updatedLabel = labelRepository.findOne(label.getId());
+        // Disconnect from session so that the updates on updatedLabel are not directly saved in db
+        em.detach(updatedLabel);
         updatedLabel.setLabel(UPDATED_LABEL);
         LabelDTO labelDTO = labelMapper.toDto(updatedLabel);
 
