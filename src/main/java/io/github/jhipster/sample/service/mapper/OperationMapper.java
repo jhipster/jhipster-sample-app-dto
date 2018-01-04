@@ -13,7 +13,7 @@ public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
 
     @Mapping(source = "bankAccount.id", target = "bankAccountId")
     @Mapping(source = "bankAccount.name", target = "bankAccountName")
-    OperationDTO toDto(Operation operation); 
+    OperationDTO toDto(Operation operation);
 
     @Mapping(source = "bankAccountId", target = "bankAccount")
     Operation toEntity(OperationDTO operationDTO);

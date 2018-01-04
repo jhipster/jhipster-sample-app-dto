@@ -13,7 +13,7 @@ public interface BankAccountMapper extends EntityMapper<BankAccountDTO, BankAcco
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "user.login", target = "userLogin")
-    BankAccountDTO toDto(BankAccount bankAccount); 
+    BankAccountDTO toDto(BankAccount bankAccount);
 
     @Mapping(source = "userId", target = "user")
     @Mapping(target = "operations", ignore = true)
