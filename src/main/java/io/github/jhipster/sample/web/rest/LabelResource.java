@@ -98,7 +98,7 @@ public class LabelResource {
         log.debug("REST request to get all Labels");
         List<Label> labels = labelRepository.findAll();
         return labelMapper.toDto(labels);
-        }
+    }
 
     /**
      * GET  /labels/:id : get the "id" label.
@@ -110,9 +110,9 @@ public class LabelResource {
     @Timed
     public ResponseEntity<LabelDTO> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
-        Label label = labelRepository.findOne(id);
-        LabelDTO labelDTO = labelMapper.toDto(label);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(labelDTO));
+        Optional<LabelDTO> labelDTO = labelRepository.findById(id)
+            .map(labelMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(labelDTO);
     }
 
     /**
@@ -125,7 +125,7 @@ public class LabelResource {
     @Timed
     public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);
-        labelRepository.delete(id);
+        labelRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

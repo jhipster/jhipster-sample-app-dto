@@ -1,6 +1,5 @@
 package io.github.jhipster.sample.service.dto;
 
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -96,7 +95,7 @@ public class OperationDTO implements Serializable {
         }
 
         OperationDTO operationDTO = (OperationDTO) o;
-        if(operationDTO.getId() == null || getId() == null) {
+        if (operationDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), operationDTO.getId());
@@ -114,6 +113,8 @@ public class OperationDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", amount=" + getAmount() +
+            ", bankAccount=" + getBankAccountId() +
+            ", bankAccount='" + getBankAccountName() + "'" +
             "}";
     }
 }

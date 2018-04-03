@@ -98,7 +98,7 @@ public class BankAccountResource {
         log.debug("REST request to get all BankAccounts");
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         return bankAccountMapper.toDto(bankAccounts);
-        }
+    }
 
     /**
      * GET  /bank-accounts/:id : get the "id" bankAccount.
@@ -110,9 +110,9 @@ public class BankAccountResource {
     @Timed
     public ResponseEntity<BankAccountDTO> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
-        BankAccount bankAccount = bankAccountRepository.findOne(id);
-        BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bankAccountDTO));
+        Optional<BankAccountDTO> bankAccountDTO = bankAccountRepository.findById(id)
+            .map(bankAccountMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(bankAccountDTO);
     }
 
     /**
@@ -125,7 +125,7 @@ public class BankAccountResource {
     @Timed
     public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
-        bankAccountRepository.delete(id);
+        bankAccountRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
