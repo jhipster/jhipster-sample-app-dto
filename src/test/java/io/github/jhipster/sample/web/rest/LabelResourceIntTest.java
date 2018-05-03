@@ -49,7 +49,6 @@ public class LabelResourceIntTest {
     private LabelRepository labelRepository;
 
 
-
     @Autowired
     private LabelMapper labelMapper;
 
@@ -183,7 +182,6 @@ public class LabelResourceIntTest {
             .andExpect(jsonPath("$.id").value(label.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingLabel() throws Exception {
@@ -231,11 +229,11 @@ public class LabelResourceIntTest {
         restLabelMockMvc.perform(put("/api/labels")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
         List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test

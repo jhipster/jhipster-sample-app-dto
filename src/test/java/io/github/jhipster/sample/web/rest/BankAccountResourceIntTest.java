@@ -53,7 +53,6 @@ public class BankAccountResourceIntTest {
     private BankAccountRepository bankAccountRepository;
 
 
-
     @Autowired
     private BankAccountMapper bankAccountMapper;
 
@@ -210,7 +209,6 @@ public class BankAccountResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.intValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingBankAccount() throws Exception {
@@ -260,11 +258,11 @@ public class BankAccountResourceIntTest {
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the BankAccount in the database
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
-        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
