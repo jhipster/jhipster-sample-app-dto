@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { ILabel } from './label.model';
+import { ILabel } from 'app/shared/model/label.model';
 
 export interface IOperation {
     id?: number;

@@ -53,7 +53,8 @@ public class LabelResource {
         log.debug("REST request to save Label : {}", labelDTO);
         if (labelDTO.getId() != null) {
             throw new BadRequestAlertException("A new label cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
+
         Label label = labelMapper.toEntity(labelDTO);
         label = labelRepository.save(label);
         LabelDTO result = labelMapper.toDto(label);
@@ -77,7 +78,8 @@ public class LabelResource {
         log.debug("REST request to update Label : {}", labelDTO);
         if (labelDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
+
         Label label = labelMapper.toEntity(labelDTO);
         label = labelRepository.save(label);
         LabelDTO result = labelMapper.toDto(label);
@@ -124,6 +126,7 @@ public class LabelResource {
     @Timed
     public ResponseEntity<Void> deleteLabel(@PathVariable Long id) {
         log.debug("REST request to delete Label : {}", id);
+
         labelRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

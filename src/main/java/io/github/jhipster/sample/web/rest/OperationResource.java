@@ -58,7 +58,8 @@ public class OperationResource {
         log.debug("REST request to save Operation : {}", operationDTO);
         if (operationDTO.getId() != null) {
             throw new BadRequestAlertException("A new operation cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
+
         Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
         OperationDTO result = operationMapper.toDto(operation);
@@ -82,7 +83,8 @@ public class OperationResource {
         log.debug("REST request to update Operation : {}", operationDTO);
         if (operationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
+
         Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
         OperationDTO result = operationMapper.toDto(operation);
@@ -137,6 +139,7 @@ public class OperationResource {
     @Timed
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         log.debug("REST request to delete Operation : {}", id);
+
         operationRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

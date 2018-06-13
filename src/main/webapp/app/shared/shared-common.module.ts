@@ -5,7 +5,6 @@ import { JhipsterDtoSampleApplicationSharedLibsModule, FindLanguageFromKeyPipe, 
 @NgModule({
     imports: [JhipsterDtoSampleApplicationSharedLibsModule],
     declarations: [FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent],
-    providers: [],
     exports: [JhipsterDtoSampleApplicationSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent]
 })
 export class JhipsterDtoSampleApplicationSharedCommonModule {}

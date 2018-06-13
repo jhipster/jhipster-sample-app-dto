@@ -53,7 +53,8 @@ public class BankAccountResource {
         log.debug("REST request to save BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() != null) {
             throw new BadRequestAlertException("A new bankAccount cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
+
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
         BankAccountDTO result = bankAccountMapper.toDto(bankAccount);
@@ -77,7 +78,8 @@ public class BankAccountResource {
         log.debug("REST request to update BankAccount : {}", bankAccountDTO);
         if (bankAccountDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
+
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDTO);
         bankAccount = bankAccountRepository.save(bankAccount);
         BankAccountDTO result = bankAccountMapper.toDto(bankAccount);
@@ -124,6 +126,7 @@ public class BankAccountResource {
     @Timed
     public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
+
         bankAccountRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
