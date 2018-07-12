@@ -13,14 +13,16 @@ describe('Component Tests', () => {
         let fixture: ComponentFixture<RegisterComponent>;
         let comp: RegisterComponent;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [JhipsterDtoSampleApplicationTestModule],
-                declarations: [RegisterComponent]
+        beforeEach(
+            async(() => {
+                TestBed.configureTestingModule({
+                    imports: [JhipsterDtoSampleApplicationTestModule],
+                    declarations: [RegisterComponent]
+                })
+                    .overrideTemplate(RegisterComponent, '')
+                    .compileComponents();
             })
-                .overrideTemplate(RegisterComponent, '')
-                .compileComponents();
-        }));
+        );
 
         beforeEach(() => {
             fixture = TestBed.createComponent(RegisterComponent);
