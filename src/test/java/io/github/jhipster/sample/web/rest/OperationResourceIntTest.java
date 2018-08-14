@@ -300,7 +300,7 @@ public class OperationResourceIntTest {
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restOperationMockMvc.perform(put("/api/operations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
