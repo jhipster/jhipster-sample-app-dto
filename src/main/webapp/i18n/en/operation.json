@@ -1,7 +1,6 @@
-
 {
     "jhipsterDtoSampleApplicationApp": {
-        "operation" : {
+        "operation": {
             "home": {
                 "title": "Operations",
                 "createLabel": "Create a new Operation",
