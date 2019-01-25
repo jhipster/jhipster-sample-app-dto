@@ -23,7 +23,7 @@
       "en"
     ],
     "serverPort": 8080,
-    "jhipsterVersion": "5.7.2",
+    "jhipsterVersion": "5.8.0",
     "enableSocialSignIn": false,
     "rememberMeKey": "40cf2e76812024d7d37f5f7e0e90446dfc3648ca",
     "useSass": false,
@@ -35,6 +35,8 @@
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "reactive": false,
-    "otherModules": []
+    "otherModules": [],
+    "entitySuffix": "",
+    "dtoSuffix": "DTO"
   }
 }

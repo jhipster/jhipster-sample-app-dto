@@ -1,8 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageHelper } from 'app/core';
 
 import { JhipsterDtoSampleApplicationSharedModule } from 'app/shared';
-import { JhipsterDtoSampleApplicationAdminModule } from 'app/admin/admin.module';
 import {
     BankAccountComponent,
     BankAccountDetailComponent,
@@ -16,7 +17,7 @@ import {
 const ENTITY_STATES = [...bankAccountRoute, ...bankAccountPopupRoute];
 
 @NgModule({
-    imports: [JhipsterDtoSampleApplicationSharedModule, JhipsterDtoSampleApplicationAdminModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [JhipsterDtoSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         BankAccountComponent,
         BankAccountDetailComponent,
@@ -25,6 +26,15 @@ const ENTITY_STATES = [...bankAccountRoute, ...bankAccountPopupRoute];
         BankAccountDeletePopupComponent
     ],
     entryComponents: [BankAccountComponent, BankAccountUpdateComponent, BankAccountDeleteDialogComponent, BankAccountDeletePopupComponent],
+    providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class JhipsterDtoSampleApplicationBankAccountModule {}
+export class JhipsterDtoSampleApplicationBankAccountModule {
+    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+        this.languageHelper.language.subscribe((languageKey: string) => {
+            if (languageKey !== undefined) {
+                this.languageService.changeLanguage(languageKey);
+            }
+        });
+    }
+}
