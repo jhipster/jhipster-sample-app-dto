@@ -21,7 +21,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [JhipsterDtoSampleApplicationTestModule, TranslateModule.forRoot()],
         declarations: [MainComponent],
-        providers: [Title]
+        providers: [Title],
       })
         .overrideTemplate(MainComponent, '')
         .compileComponents();

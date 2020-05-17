@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LabelResource} REST controller.
  */
 @SpringBootTest(classes = JhipsterDtoSampleApplicationApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class LabelResourceIT {
@@ -82,7 +81,6 @@ public class LabelResourceIT {
     @Transactional
     public void createLabel() throws Exception {
         int databaseSizeBeforeCreate = labelRepository.findAll().size();
-
         // Create the Label
         LabelDTO labelDTO = labelMapper.toDto(label);
         restLabelMockMvc.perform(post("/api/labels").with(csrf())
@@ -128,6 +126,7 @@ public class LabelResourceIT {
         // Create the Label, which fails.
         LabelDTO labelDTO = labelMapper.toDto(label);
 
+
         restLabelMockMvc.perform(post("/api/labels").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
@@ -164,7 +163,6 @@ public class LabelResourceIT {
             .andExpect(jsonPath("$.id").value(label.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL));
     }
-
     @Test
     @Transactional
     public void getNonExistingLabel() throws Exception {

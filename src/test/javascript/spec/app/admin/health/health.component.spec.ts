@@ -15,7 +15,7 @@ describe('Component Tests', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [JhipsterDtoSampleApplicationTestModule],
-        declarations: [HealthComponent]
+        declarations: [HealthComponent],
       })
         .overrideTemplate(HealthComponent, '')
         .compileComponents();

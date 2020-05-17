@@ -18,7 +18,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [JhipsterDtoSampleApplicationTestModule],
         declarations: [OperationUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(OperationUpdateComponent, '')
         .compileComponents();
