@@ -250,7 +250,7 @@ class BankAccountResourceIT {
 
     @Test
     @Transactional
-    void putNewBankAccount() throws Exception {
+    void putExistingBankAccount() throws Exception {
         // Initialize the database
         bankAccountRepository.saveAndFlush(bankAccount);
 
