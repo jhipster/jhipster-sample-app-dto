@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AlertError } from './alert-error.model';
 import { Alert, AlertService } from 'app/core/util/alert.service';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { AlertError } from './alert-error.model';
 
 @Component({
   standalone: true,
@@ -20,7 +20,11 @@ export class AlertErrorComponent implements OnDestroy {
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
-  constructor(private alertService: AlertService, private eventManager: EventManager, translateService: TranslateService) {
+  constructor(
+    private alertService: AlertService,
+    private eventManager: EventManager,
+    translateService: TranslateService,
+  ) {
     this.errorListener = eventManager.subscribe('jhipsterDtoSampleApplicationApp.error', (response: EventWithContent<unknown> | string) => {
       const errorResponse = (response as EventWithContent<AlertError>).content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
@@ -59,7 +63,7 @@ export class AlertErrorComponent implements OnDestroy {
                 // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                 const convertedField: string = fieldError.field.replace(/\[\d*\]/g, '[]');
                 const fieldName: string = translateService.instant(
-                  `jhipsterDtoSampleApplicationApp.${fieldError.objectName as string}.${convertedField}`
+                  `jhipsterDtoSampleApplicationApp.${fieldError.objectName as string}.${convertedField}`,
                 );
                 this.addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message as string}`, { fieldName });
               }
@@ -67,7 +71,7 @@ export class AlertErrorComponent implements OnDestroy {
               this.addErrorAlert(
                 httpErrorResponse.error.detail ?? httpErrorResponse.error.message,
                 httpErrorResponse.error.message,
-                httpErrorResponse.error.params
+                httpErrorResponse.error.params,
               );
             } else {
               this.addErrorAlert(httpErrorResponse.error, httpErrorResponse.error);
@@ -84,13 +88,13 @@ export class AlertErrorComponent implements OnDestroy {
               this.addErrorAlert(
                 httpErrorResponse.error.detail ?? httpErrorResponse.error.message,
                 httpErrorResponse.error.message,
-                httpErrorResponse.error.params
+                httpErrorResponse.error.params,
               );
             } else {
               this.addErrorAlert(httpErrorResponse.error, httpErrorResponse.error);
             }
         }
-      }
+      },
     );
   }
 
