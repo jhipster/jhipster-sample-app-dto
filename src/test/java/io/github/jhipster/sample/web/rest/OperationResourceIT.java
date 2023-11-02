@@ -57,7 +57,7 @@ class OperationResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
-    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+    private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private OperationRepository operationRepository;
@@ -292,7 +292,7 @@ class OperationResourceIT {
     @Transactional
     void putNonExistingOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -316,7 +316,7 @@ class OperationResourceIT {
     @Transactional
     void putWithIdMismatchOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -324,7 +324,7 @@ class OperationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOperationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(operationDTO))
@@ -340,7 +340,7 @@ class OperationResourceIT {
     @Transactional
     void putWithMissingIdPathParamOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -428,7 +428,7 @@ class OperationResourceIT {
     @Transactional
     void patchNonExistingOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -452,7 +452,7 @@ class OperationResourceIT {
     @Transactional
     void patchWithIdMismatchOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -460,7 +460,7 @@ class OperationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOperationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(operationDTO))
@@ -476,7 +476,7 @@ class OperationResourceIT {
     @Transactional
     void patchWithMissingIdPathParamOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
-        operation.setId(count.incrementAndGet());
+        operation.setId(longCount.incrementAndGet());
 
         // Create the Operation
         OperationDTO operationDTO = operationMapper.toDto(operation);
