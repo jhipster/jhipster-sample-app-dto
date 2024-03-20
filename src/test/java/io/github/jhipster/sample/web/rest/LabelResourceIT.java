@@ -1,18 +1,20 @@
 package io.github.jhipster.sample.web.rest;
 
+import static io.github.jhipster.sample.domain.LabelAsserts.*;
+import static io.github.jhipster.sample.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.sample.IntegrationTest;
 import io.github.jhipster.sample.domain.Label;
 import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.service.dto.LabelDTO;
 import io.github.jhipster.sample.service.mapper.LabelMapper;
 import jakarta.persistence.EntityManager;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,9 @@ class LabelResourceIT {
 
     private static Random random = new Random();
     private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+
+    @Autowired
+    private ObjectMapper om;
 
     @Autowired
     private LabelRepository labelRepository;
@@ -85,23 +90,23 @@ class LabelResourceIT {
     @Test
     @Transactional
     void createLabel() throws Exception {
-        int databaseSizeBeforeCreate = labelRepository.findAll().size();
+        long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Label
         LabelDTO labelDTO = labelMapper.toDto(label);
-        restLabelMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
-            )
-            .andExpect(status().isCreated());
+        var returnedLabelDTO = om.readValue(
+            restLabelMockMvc
+                .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(labelDTO)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(),
+            LabelDTO.class
+        );
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeCreate + 1);
-        Label testLabel = labelList.get(labelList.size() - 1);
-        assertThat(testLabel.getLabel()).isEqualTo(DEFAULT_LABEL);
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedLabel = labelMapper.toEntity(returnedLabelDTO);
+        assertLabelUpdatableFieldsEquals(returnedLabel, getPersistedLabel(returnedLabel));
     }
 
     @Test
@@ -111,27 +116,21 @@ class LabelResourceIT {
         label.setId(1L);
         LabelDTO labelDTO = labelMapper.toDto(label);
 
-        int databaseSizeBeforeCreate = labelRepository.findAll().size();
+        long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLabelMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
-            )
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeCreate);
+        assertSameRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkLabelIsRequired() throws Exception {
-        int databaseSizeBeforeTest = labelRepository.findAll().size();
+        long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
         label.setLabel(null);
 
@@ -139,16 +138,10 @@ class LabelResourceIT {
         LabelDTO labelDTO = labelMapper.toDto(label);
 
         restLabelMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
-            )
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeTest);
+        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -194,7 +187,7 @@ class LabelResourceIT {
         // Initialize the database
         labelRepository.saveAndFlush(label);
 
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the label
         Label updatedLabel = labelRepository.findById(label.getId()).orElseThrow();
@@ -208,21 +201,19 @@ class LabelResourceIT {
                 put(ENTITY_API_URL_ID, labelDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
+                    .content(om.writeValueAsBytes(labelDTO))
             )
             .andExpect(status().isOk());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
-        Label testLabel = labelList.get(labelList.size() - 1);
-        assertThat(testLabel.getLabel()).isEqualTo(UPDATED_LABEL);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertPersistedLabelToMatchAllProperties(updatedLabel);
     }
 
     @Test
     @Transactional
     void putNonExistingLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -234,19 +225,18 @@ class LabelResourceIT {
                 put(ENTITY_API_URL_ID, labelDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
+                    .content(om.writeValueAsBytes(labelDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -258,19 +248,18 @@ class LabelResourceIT {
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
+                    .content(om.writeValueAsBytes(labelDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -278,17 +267,11 @@ class LabelResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLabelMockMvc
-            .perform(
-                put(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
-            )
+            .perform(put(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(labelDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -297,7 +280,7 @@ class LabelResourceIT {
         // Initialize the database
         labelRepository.saveAndFlush(label);
 
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the label using partial update
         Label partialUpdatedLabel = new Label();
@@ -308,15 +291,14 @@ class LabelResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedLabel.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLabel))
+                    .content(om.writeValueAsBytes(partialUpdatedLabel))
             )
             .andExpect(status().isOk());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
-        Label testLabel = labelList.get(labelList.size() - 1);
-        assertThat(testLabel.getLabel()).isEqualTo(DEFAULT_LABEL);
+
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertLabelUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedLabel, label), getPersistedLabel(label));
     }
 
     @Test
@@ -325,7 +307,7 @@ class LabelResourceIT {
         // Initialize the database
         labelRepository.saveAndFlush(label);
 
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the label using partial update
         Label partialUpdatedLabel = new Label();
@@ -338,21 +320,20 @@ class LabelResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedLabel.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLabel))
+                    .content(om.writeValueAsBytes(partialUpdatedLabel))
             )
             .andExpect(status().isOk());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
-        Label testLabel = labelList.get(labelList.size() - 1);
-        assertThat(testLabel.getLabel()).isEqualTo(UPDATED_LABEL);
+
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertLabelUpdatableFieldsEquals(partialUpdatedLabel, getPersistedLabel(partialUpdatedLabel));
     }
 
     @Test
     @Transactional
     void patchNonExistingLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -364,19 +345,18 @@ class LabelResourceIT {
                 patch(ENTITY_API_URL_ID, labelDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
+                    .content(om.writeValueAsBytes(labelDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -388,19 +368,18 @@ class LabelResourceIT {
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
+                    .content(om.writeValueAsBytes(labelDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamLabel() throws Exception {
-        int databaseSizeBeforeUpdate = labelRepository.findAll().size();
+        long databaseSizeBeforeUpdate = getRepositoryCount();
         label.setId(longCount.incrementAndGet());
 
         // Create the Label
@@ -408,17 +387,11 @@ class LabelResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLabelMockMvc
-            .perform(
-                patch(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(labelDTO))
-            )
+            .perform(patch(ENTITY_API_URL).with(csrf()).contentType("application/merge-patch+json").content(om.writeValueAsBytes(labelDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Label in the database
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeUpdate);
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -427,7 +400,7 @@ class LabelResourceIT {
         // Initialize the database
         labelRepository.saveAndFlush(label);
 
-        int databaseSizeBeforeDelete = labelRepository.findAll().size();
+        long databaseSizeBeforeDelete = getRepositoryCount();
 
         // Delete the label
         restLabelMockMvc
@@ -435,7 +408,34 @@ class LabelResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Label> labelList = labelRepository.findAll();
-        assertThat(labelList).hasSize(databaseSizeBeforeDelete - 1);
+        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+    }
+
+    protected long getRepositoryCount() {
+        return labelRepository.count();
+    }
+
+    protected void assertIncrementedRepositoryCount(long countBefore) {
+        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
+    }
+
+    protected void assertDecrementedRepositoryCount(long countBefore) {
+        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
+    }
+
+    protected void assertSameRepositoryCount(long countBefore) {
+        assertThat(countBefore).isEqualTo(getRepositoryCount());
+    }
+
+    protected Label getPersistedLabel(Label label) {
+        return labelRepository.findById(label.getId()).orElseThrow();
+    }
+
+    protected void assertPersistedLabelToMatchAllProperties(Label expectedLabel) {
+        assertLabelAllPropertiesEquals(expectedLabel, getPersistedLabel(expectedLabel));
+    }
+
+    protected void assertPersistedLabelToMatchUpdatableProperties(Label expectedLabel) {
+        assertLabelAllUpdatablePropertiesEquals(expectedLabel, getPersistedLabel(expectedLabel));
     }
 }
