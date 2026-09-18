@@ -54,7 +54,7 @@ public class OperationResource {
      * {@code POST  /operations} : Create a new operation.
      *
      * @param operationDTO the operationDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new operationDTO, or with status {@code 400 (Bad Request)} if the operation has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new operationDTO, or with status {@code 400 (Bad Request)} if the operation already has an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
@@ -122,7 +122,7 @@ public class OperationResource {
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody OperationDTO operationDTO
     ) throws URISyntaxException {
-        LOG.debug("REST request to partial update Operation partially : {}, {}", id, operationDTO);
+        LOG.debug("REST request to partially update Operation : {}, {}", id, operationDTO);
         if (operationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
